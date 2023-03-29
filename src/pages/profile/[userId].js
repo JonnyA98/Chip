@@ -4,7 +4,11 @@ const Profile = () => {
   const router = useRouter();
   const { username } = router.query;
 
-  return <div>Hello {username} !</div>;
+  return (
+    <>
+      <h1>hello {username} !</h1>
+    </>
+  );
 };
 
 export default Profile;
