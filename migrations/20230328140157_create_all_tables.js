@@ -9,9 +9,9 @@ exports.up = function (knex) {
       table.string("name").notNullable();
       table.string("email").unique().notNullable();
       table.string("password").notNullable();
-      table.string("color").notNullable();
-      table.string("interest_id");
-      table.string("image_url");
+      table.string("color").notNullable().defaultTo("pending");
+      table.string("interest_id").notNullable().defaultTo("pending");
+      table.string("image_url").notNullable.defaultTo("pending");
       table.timestamp("updated_at").defaultTo(knex.fn.now());
     })
     .createTable("interests", function (table) {

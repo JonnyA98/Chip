@@ -9,6 +9,29 @@ const bycrypt = require("bcrypt");
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  expressSession({
+    secret: process.env.SERVER_SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
+const userRoutes = require("./routes/users");
+app.use("/api/users", userRoutes);
+
+const giftRoutes = require("./routes/gifts");
+app.use("/api/gifts", giftRoutes);
+
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
 }
