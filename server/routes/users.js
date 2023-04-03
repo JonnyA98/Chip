@@ -18,8 +18,7 @@ const signup = async (req, res) => {
   if (userExists.length) {
     return res.status(400).json({
       error: true,
-      message:
-        "Could not add to warehouse with email: ${bodyUserEmail} as this email has been taken.",
+      message: "Could not add user as user as this email has been taken.",
     });
   }
 
@@ -31,7 +30,7 @@ const signup = async (req, res) => {
     }
 
     try {
-      await knewx("users").insert({ ...req.body, password: hashedPassword });
+      await knex("users").insert({ ...req.body, password: hashedPassword });
       res.json({ success: true });
     } catch (error) {
       console.log(error);
@@ -41,7 +40,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  if (!name || !email || !password || Object.keys(req.body).length > 2) {
+  if (!email || !password || Object.keys(req.body).length > 2) {
     return res.status(400).json({
       error: true,
       message: "Incomplete POST body",
@@ -86,6 +85,12 @@ const userProfile = async (req, res) => {
   }
 };
 
-module.exports = signup;
-module.exports = login;
-module.exports = userProfile;
+// module.exports = signup;
+// module.exports = login;
+// module.exports = userProfile;
+
+module.exports = {
+  signup,
+  login,
+  userProfile,
+};

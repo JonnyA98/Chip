@@ -6,9 +6,10 @@ const passport = require("passport");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const bycrypt = require("bcrypt");
-const signup = require("./routes/users");
-const login = require("./routes/users");
-const userProfile = require("./routes/users");
+const { signup } = require("./routes/users");
+const { login } = require("./routes/users");
+const { userProfile } = require("./routes/users");
+const authorise = require("./middlewear/auth");
 
 const app = express();
 
@@ -31,7 +32,7 @@ app.use(
 
 app.post("/api/users", signup);
 app.post("/api/user", login);
-app.get("/api/user", userProfile);
+app.get("/api/user", authorise, userProfile);
 
 if (!process.env.BACKEND_PORT) {
   process.env.BACKEND_PORT === 3001;
