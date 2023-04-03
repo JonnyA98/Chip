@@ -47,9 +47,7 @@ const Login = () => {
   if (isLoggedIn) {
     getUserDetails().then(() =>
       router.push({
-        pathname: "/profile",
-        query: { userId: userData.id },
-        state: userData,
+        pathname: `/profile/${userData.id}`,
       })
     );
   }
