@@ -1,0 +1,37 @@
+@use "../styles/partials/mixins" as *;
+@use "../styles/partials/variables" as *;
+
+.home {
+  @include flex();
+  padding: 3rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0;
+  background-color: $primary-four;
+  position: relative;
+  bottom: 7rem;
+
+  &__center {
+    background: $primary-four;
+    @include flex(center, center, column);
+    position: relative;
+    top: 2rem;
+    margin-top: 5rem;
+    z-index: 20;
+    padding: 2rem;
+    text-align: center;
+    width: 70%;
+  }
+
+  &__left {
+    height: 100vh;
+    width: 50%;
+    background-color: $primary-two;
+    margin: 0;
+  }
+  &__right {
+    height: 100vh;
+    width: 50%;
+    background-color: $primary-three;
+    margin: 0;
+  }
+}

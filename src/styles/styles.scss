@@ -1,2 +1,7 @@
 @use "./partials/resets" as *;
 @use "./partials/typography" as *;
+@use "./partials/variables" as *;
+
+.wrapper {
+  background-color: $primary-four;
+}
