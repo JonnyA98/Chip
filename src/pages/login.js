@@ -1,5 +1,10 @@
-import axios from "axios";
 import { useState } from "react";
+import Image from "next/image";
+import axios from "axios";
+import styles from "../styles/home.module.scss";
+import navStyles from "../styles/Navbar.module.scss";
+import logo from "../../public/Logo/Chiplogo.svg";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Login = () => {
@@ -53,25 +58,46 @@ const Login = () => {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={loginHandler}>
-        <input
-          onChange={(e) => setLoginEmail(e.target.value)}
-          type="email"
-          name="email"
-          placeholder="email@example.com"
-        />
-        <input
-          onChange={(e) => setLoginPassword(e.target.value)}
-          type="password"
-          name="password"
-          placeholder="password"
-        />
+    <>
+      <div>
+        <article className={navStyles.navBar}>
+          <div>
+            <Link className={navStyles.navBar__logo} href="/">
+              <Image
+                className={navStyles.navBar__image}
+                height="150"
+                src={logo}
+                alt="logo"
+              />
+            </Link>
+          </div>
+          <div className={styles.home__center}>
+            <h1 className={navStyles.navBar__header}>Login</h1>
+          </div>
 
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          <form onSubmit={loginHandler} className={styles.home__center}>
+            <input
+              onChange={(e) => setLoginEmail(e.target.value)}
+              type="email"
+              name="email"
+              placeholder="email@example.com"
+            />
+            <input
+              onChange={(e) => setLoginPassword(e.target.value)}
+              type="password"
+              name="password"
+              placeholder="password"
+            />
+            <button type="submit">Login</button>
+          </form>
+        </article>
+
+        <div className={styles.home}>
+          <div className={styles.home__left}></div>
+          <div className={styles.home__right}></div>
+        </div>
+      </div>
+    </>
   );
 };
 

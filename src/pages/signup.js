@@ -5,12 +5,43 @@ import styles from "../styles/home.module.scss";
 import navStyles from "../styles/Navbar.module.scss";
 import logo from "../../public/Logo/Chiplogo.svg";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Signup = () => {
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [userData, setUserData] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  const getUserDetails = async () => {
+    const authToken = sessionStorage.getItem("authToken");
+    try {
+      const { data } = await axios.get(`http://localhost:3001/api/user`, {
+        headers: {
+          authorisation: `Bearer ${authToken}`,
+        },
+      });
+      setUserData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loginHandler = async () => {
+    try {
+      const { data } = await axios.post(`http://localhost:3001/api/user`, {
+        email: registerEmail,
+        password: registerPassword,
+      });
+      sessionStorage.setItem("authToken", data.authToken);
+      setIsLoggedIn(true);
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+  };
 
   const signupHandler = async (e) => {
     e.preventDefault();
@@ -23,11 +54,19 @@ const Signup = () => {
         password: registerPassword,
         email: registerEmail,
       });
+      loginHandler();
     } catch (error) {
       console.log(error.response);
-      setErrorMessage(err.rresponse.data.message);
+      setErrorMessage(error.response.data.message);
     }
   };
+
+  if (isLoggedIn) {
+    getUserDetails();
+    router.push({
+      pathname: `/profile/${userData.id}`,
+    });
+  }
 
   return (
     <>
@@ -47,7 +86,7 @@ const Signup = () => {
             <h1 className={navStyles.navBar__header}>Register</h1>
           </div>
 
-          <form className={styles.home__center}>
+          <form onSubmit={signupHandler} className={styles.home__center}>
             <input
               onChange={(e) => setRegisterUsername(e.target.value)}
               type="text"
@@ -56,7 +95,7 @@ const Signup = () => {
             />
             <input
               onChange={(e) => setRegisterPassword(e.target.value)}
-              type="text"
+              type="password"
               name="password"
               placeholder="password"
             />
@@ -67,7 +106,7 @@ const Signup = () => {
               placeholder="email@example.com"
             />
 
-            <button type="submit"></button>
+            <button type="submit">Create Account</button>
           </form>
         </article>
 
