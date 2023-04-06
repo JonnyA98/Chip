@@ -5,13 +5,13 @@ import styles from "../../styles/home.module.scss";
 import navStyles from "../../styles/Navbar.module.scss";
 import logo from "../../../public/Logo/Chiplogo.svg";
 import Link from "next/link";
+import Friend from "../../components/Friend/Friend";
 import { useRouter } from "next/router";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({});
-  const [friends, setFriends] = useState([]);
-  const [friendsHeading, setFriendsHeading] = useState(null);
+  const [friendsList, setFriendsList] = useState([]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -26,28 +26,24 @@ const Profile = () => {
         console.log(error);
       }
     };
+    getUserData();
+  }, []);
+
+  useEffect(() => {
     const getUserFriends = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:3001/api/users/friends/:id"
+          `http://localhost:3001/api/users/friends/${userData.id}`
         );
-        setFriends(data);
+        setFriendsList(data);
       } catch (error) {
         console.log(error);
       }
     };
-
-    getUserData();
-    getUserFriends();
-  }, []);
-
-  useEffect(() => {
-    if (friends.length === 0) {
-      setFriendsHeading("Let's get you started by adding some friends :)");
-      return;
+    if (userData.id) {
+      getUserFriends();
     }
-    setFriendsHeading("Chip towards you're friend's gifts");
-  }, [friends]);
+  }, [userData]);
 
   return (
     <>
@@ -72,7 +68,14 @@ const Profile = () => {
             </div>
 
             <div className={styles.home__center}>
-              <h2>{friendsHeading}</h2>
+              <h2>Friends</h2>
+              {friendsList.length > 0 ? (
+                friendsList.map((friend) => {
+                  return <Friend friend={friend} key={friend.id} />;
+                })
+              ) : (
+                <p>Add some friends to get started!</p>
+              )}
             </div>
           </article>
 
