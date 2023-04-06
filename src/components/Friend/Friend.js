@@ -5,11 +5,10 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-const Friend = ({ friend }) => {
+const Friend = ({ friend, allUsers }) => {
   const [picture, setPicture] = useState(null);
   const [gifts, setGifts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [allUsers, setUsers] = useState(null);
 
   useEffect(() => {
     if (friend.image_url === "pending") {
@@ -51,13 +50,17 @@ const Friend = ({ friend }) => {
           <h3 className={friendStyle.friend__name}>Current Gifts</h3>
           {gifts &&
             gifts.map((gift) => {
+              const sender = allUsers.find(
+                (user) => user.id === gift.sender_id
+              );
+
               return (
-                <Link key={gift.id} href="/">
+                <Link key={gift.id} href={`/gift/${gift.id}`}>
                   <article className={friendStyle.smallgift}>
                     <h4>
-                      {gift.title} started by {gift.sender_id}
+                      {gift.title} started by {sender.name}
                     </h4>
-                  </article>{" "}
+                  </article>
                 </Link>
               );
             })}

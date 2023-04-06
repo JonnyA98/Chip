@@ -12,6 +12,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState({});
   const [friendsList, setFriendsList] = useState([]);
+  const [allUsers, setAllUsers] = useState(null);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -45,6 +46,18 @@ const Profile = () => {
     }
   }, [userData]);
 
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:3001/api/users/all");
+        setAllUsers(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllUsers();
+  }, []);
+
   return (
     <>
       {isLoading && <h1>LOADING...</h1>}
@@ -71,7 +84,13 @@ const Profile = () => {
               <h2>Friends</h2>
               {friendsList.length > 0 ? (
                 friendsList.map((friend) => {
-                  return <Friend friend={friend} key={friend.id} />;
+                  return (
+                    <Friend
+                      allUsers={allUsers}
+                      friend={friend}
+                      key={friend.id}
+                    />
+                  );
                 })
               ) : (
                 <p>Add some friends to get started!</p>
