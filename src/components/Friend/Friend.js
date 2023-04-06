@@ -9,6 +9,7 @@ const Friend = ({ friend }) => {
   const [picture, setPicture] = useState(null);
   const [gifts, setGifts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [allUsers, setUsers] = useState(null);
 
   useEffect(() => {
     if (friend.image_url === "pending") {
@@ -46,7 +47,27 @@ const Friend = ({ friend }) => {
       )}
       <div className={friendStyle.friend__wrapper}>
         <h3 className={friendStyle.friend__name}>{friend.name}</h3>
-        {!gifts.length && <p>There are no gifts for your friend, start one!</p>}
+        <div className={friendStyle.friend__wrapper}>
+          <h3 className={friendStyle.friend__name}>Current Gifts</h3>
+          {gifts &&
+            gifts.map((gift) => {
+              return (
+                <Link key={gift.id} href="/">
+                  <article className={friendStyle.smallgift}>
+                    <h4>
+                      {gift.title} started by {gift.sender_id}
+                    </h4>
+                  </article>{" "}
+                </Link>
+              );
+            })}
+        </div>
+        {gifts && !gifts.length && (
+          <p>
+            There are no gifts for your friend,{" "}
+            <Link href={`/creategift/${friend.id}`}>start one!</Link>
+          </p>
+        )}
       </div>
     </article>
   );

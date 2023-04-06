@@ -1,0 +1,27 @@
+@use "../styles/partials/mixins" as *;
+@use "../styles/partials/variables" as *;
+
+.wrapper {
+  height: 80rem;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  @include flex(center, center);
+}
+
+.thankyou {
+  height: 40%;
+  width: 90%;
+  background-color: $primary-four;
+  &__header {
+    margin-top: 2rem;
+    text-align: center;
+  }
+}
+
+.mainwrapper {
+  position: absolute;
+  top: 0;
+}
