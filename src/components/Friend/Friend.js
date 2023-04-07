@@ -33,7 +33,7 @@ const Friend = ({ friend, allUsers }) => {
   }, []);
 
   return (
-    <article className={friendStyle.friend}>
+    <article className={friendStyle.friendCard}>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -44,10 +44,10 @@ const Friend = ({ friend, allUsers }) => {
           alt="profile pic"
         />
       )}
-      <div className={friendStyle.friend__wrapper}>
-        <h3 className={friendStyle.friend__name}>{friend.name}</h3>
-        <div className={friendStyle.friend__wrapper}>
-          <h3 className={friendStyle.friend__name}>Current Gifts</h3>
+      <div className={friendStyle.friendWrapper}>
+        <h3 className={friendStyle.friendName}>{friend.name}</h3>
+        <div className={friendStyle.giftWrapper}>
+          <h3 className={friendStyle.giftHeading}>Current Gifts</h3>
           {gifts &&
             gifts.map((gift) => {
               const sender = allUsers.find(
@@ -56,7 +56,7 @@ const Friend = ({ friend, allUsers }) => {
 
               return (
                 <Link key={gift.id} href={`/gift/${gift.id}`}>
-                  <article className={friendStyle.smallgift}>
+                  <article className={friendStyle.smallGift}>
                     <h4>
                       {gift.title} started by {sender.name}
                     </h4>

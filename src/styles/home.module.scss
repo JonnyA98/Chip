@@ -1,38 +1,124 @@
-@use "../styles/partials/mixins" as *;
-@use "../styles/partials/variables" as *;
-
-.home {
-  @include flex();
-  padding: 3rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0;
-  background-color: $primary-four;
+.container {
   position: relative;
-  bottom: 7rem;
+}
 
-  &__center {
-    background: $primary-four;
-    @include flex(center, center, column);
-    position: relative;
-    top: 2rem;
-    margin-top: 5rem;
-    z-index: 20;
-    padding: 2rem;
-    text-align: center;
-    width: 70%;
-    height: 30rem;
-  }
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 
-  &__left {
-    height: 100vh;
-    width: 50%;
-    background-color: $primary-two;
-    margin: 0;
+.logowrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.heading {
+  margin-right: 2rem;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.link {
+  font-size: 3rem;
+}
+
+.link_login {
+  font-size: 1.25rem;
+  color: black;
+  text-decoration: none;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 2rem;
+
+  &:hover {
+    color: white;
+    background-color: black;
   }
-  &__right {
-    height: 100vh;
-    width: 50%;
-    background-color: $primary-three;
-    margin: 0;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.header {
+  font-size: 4.5rem;
+
+  color: black;
+  text-decoration: none;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 2rem;
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+
+.headingwrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  border-radius: 2rem;
+  padding: 1rem;
+  position: relative;
+  top: 0.5rem;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+.headingwrapper:hover .settingsimg {
+  filter: invert(1);
+}
+
+.settingsimg {
+  position: relative;
+  right: 0.75rem;
+}
+
+.heading {
+  margin: 0;
+  width: 1000%;
+  text-align: left;
+  position: relative;
+  left: 1rem;
+}
+
+.subHeading {
+  margin: 2rem;
+}
+
+.header_small {
+  font-size: 1.25rem;
+  color: black;
+  margin-bottom: 1rem;
+  text-align: center;
+
+  padding: 1rem;
+}
+
+.textContainer {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  padding: 1rem;
+}
+
+.welcome {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+  text-align: center;
+  &__heading {
+    width: 80%;
+    margin-bottom: 2rem;
   }
 }

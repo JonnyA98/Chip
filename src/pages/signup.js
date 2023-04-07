@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import styles from "../styles/home.module.scss";
-import navStyles from "../styles/Navbar.module.scss";
-import logo from "../../public/Logo/Chiplogo.svg";
+import styles from "../styles/signup.module.scss";
+
+import logo from "../../public/Logo/chiplogo.webp";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -70,23 +70,19 @@ const Signup = () => {
 
   return (
     <>
-      <div>
-        <article className={navStyles.navBar}>
-          <div>
-            <Link className={navStyles.navBar__logo} href="/">
-              <Image
-                className={navStyles.navBar__image}
-                height="150"
-                src={logo}
-                alt="logo"
-              />
-            </Link>
-          </div>
-          <div className={styles.home__center}>
-            <h1 className={navStyles.navBar__header}>Register</h1>
-          </div>
-
-          <form onSubmit={signupHandler} className={styles.home__center}>
+      <article className={styles.navBar}>
+        <div>
+          <Link className={styles.navBar__logo} href="/">
+            <Image
+              className={styles.navBar__image}
+              height="250"
+              src={logo}
+              alt="logo"
+            />
+          </Link>
+        </div>
+        <div className={styles.formWrapper}>
+          <form onSubmit={signupHandler} className={styles.form}>
             <input
               onChange={(e) => setRegisterUsername(e.target.value)}
               type="text"
@@ -105,16 +101,10 @@ const Signup = () => {
               name="email"
               placeholder="email@example.com"
             />
-
             <button type="submit">Create Account</button>
           </form>
-        </article>
-
-        <div className={styles.home}>
-          <div className={styles.home__left}></div>
-          <div className={styles.home__right}></div>
         </div>
-      </div>
+      </article>
     </>
   );
 };

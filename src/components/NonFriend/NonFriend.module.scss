@@ -1,7 +1,7 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 
-.friendCard {
+.nonFriendCard {
   display: flex;
   align-items: center;
   background-color: #fff;
@@ -16,35 +16,19 @@
   margin-right: 20px;
 }
 
-.friendWrapper {
+.nonFriendWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-grow: 1;
 }
-
-.friendName {
+.nonFriendName {
   font-size: 1.5rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
 }
 
-.giftWrapper {
-  margin-top: 10px;
-}
-
-.giftHeading {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.smallGift {
-  font-size: 1rem;
-  color: #555;
+.addImage {
   cursor: pointer;
-  margin-bottom: 5px;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }

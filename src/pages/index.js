@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import styles from "../styles/home.module.scss";
-import navStyles from "../styles/Navbar.module.scss";
-import logo from "../../public/Logo/Chiplogo.svg";
+
+import logo from "../../public/Logo/chiplogo.webp";
 
 const Home = () => {
   return (
@@ -12,38 +12,34 @@ const Home = () => {
       <Head>
         <title>Chip</title>
       </Head>
-      <div>
-        <article className={navStyles.navBar}>
-          <div>
-            <Link className={navStyles.navBar__logo} href="/">
+      <div className={styles.container}>
+        <article className={styles.navBar}>
+          <div className={styles.logowrapper}>
+            <Link className={styles.logo} href="/">
               <Image
-                className={navStyles.navBar__image}
-                height="150"
+                className={styles.image}
+                height="300"
                 src={logo}
                 alt="logo"
               />
             </Link>
           </div>
-          <div className={styles.home__center}>
-            <h1 className={navStyles.navBar__header}>Get Started </h1>
-            <Link className={navStyles.navBar__link} href="/signup">
-              Here
+
+          <div className={styles.textContainer}>
+            <Link className={styles.link} href="/signup">
+              <h1 className={styles.header}>Get Started </h1>
             </Link>
-          </div>
-          <div className={styles.home__center}>
-            <h2 className={navStyles.navBar__header__small}>
-              Or already have an account?{" "}
-            </h2>
-            <Link className={navStyles.navBar__link_login} href="/login">
-              Login Here
-            </Link>
+
+            <div>
+              <h2 className={styles.header_small}>
+                Or already have an account?
+              </h2>
+              <Link className={styles.link_login} href="/login">
+                Login Here
+              </Link>
+            </div>
           </div>
         </article>
-
-        <div className={styles.home}>
-          <div className={styles.home__left}></div>
-          <div className={styles.home__right}></div>
-        </div>
       </div>
     </>
   );

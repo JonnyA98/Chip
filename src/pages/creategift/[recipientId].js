@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import styles from "../../styles/home.module.scss";
-import navStyles from "../../styles/Navbar.module.scss";
-import giftStyles from "../../styles/createGift.module.scss";
-import logo from "../../../public/Logo/Chiplogo.svg";
+import styles from "../../styles/signup.module.scss";
+
+import logo from "../../../public/Logo/chiplogo.webp";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -90,96 +89,85 @@ const createGift = () => {
 
   return (
     <>
-      {giftCreated && (
-        <div className={giftStyles.wrapper}>
-          <article className={giftStyles.thankyou}>
-            <h1 className={giftStyles.thankyou__header}>
-              Thank you for starting something special!
-            </h1>
-            <div>
-              <p>
-                Your friend is going to have a wonderful surprise! What would
-                you like to do now?
-              </p>
-              {/* <Link href={`/`}>Go to this gift's page?</Link> or */}
-              <Link href={`/profile/${userData.id}`}>
-                Go back home to start another gift or Chip!
-              </Link>
-            </div>
-          </article>
+      {giftCreated ? (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h1 className={styles.successHeader}>Gift Created Successfully!</h1>
+            <p>Thank you for starting something special!</p>
+            <Link href={`/profile/${userData.id}`}>
+              Go back home to start another gift or Chip!
+            </Link>
+          </div>
         </div>
-      )}
-      {isLoading && <h1>LOADING....</h1>}
-      {!isLoading && (
-        <div className={giftStyles.mainwrapper}>
-          <article className={navStyles.navBar}>
+      ) : (
+        <div className={styles.container}>
+          <article className={styles.navBar}>
             <div>
-              <Link className={navStyles.navBar__logo} href="/">
+              <Link className={styles.navBar__logo} href="/">
                 <Image
-                  className={navStyles.navBar__image}
+                  className={styles.navBar__image}
                   height="150"
                   src={logo}
                   alt="logo"
                 />
               </Link>
             </div>
-            <div className={styles.home__center}>
-              <h1 className={navStyles.navBar__header}>Create a Gift</h1>
+            <div className={styles.formWrapper}>
+              <h1 className={styles.formHeader}>Create a Gift</h1>
+              <form onSubmit={startGiftHandler} className={styles.form}>
+                <label className={styles.formLabel} htmlFor="description">
+                  Title
+                </label>
+                <input
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  name="title"
+                  placeholder="Title"
+                />
+                <label className={styles.formLabel} htmlFor="description">
+                  Description
+                </label>
+                <input
+                  onChange={(e) => setDescription(e.target.value)}
+                  type="text"
+                  name="description"
+                  placeholder="Description"
+                />
+                <label className={styles.formLabel} htmlFor="target">
+                  Target amount
+                </label>
+                <input
+                  onChange={(e) => setTarget(e.target.value)}
+                  type="number"
+                  name="target"
+                  placeholder="00.00"
+                />
+                <label className={styles.formLabel} htmlFor="you">
+                  How much would you like to put in?
+                </label>
+                <input
+                  onChange={(e) => setYou(e.target.value)}
+                  type="number"
+                  name="you"
+                  placeholder="00.00"
+                />
+                <label className={styles.formLabel} htmlFor="you">
+                  When would you like the deadline for collection to be?
+                </label>
+                <input
+                  onChange={(e) => setEndDate(e.target.value)}
+                  type="date"
+                  name="you"
+                  className={styles.dateInput}
+                />
+
+                <button type="submit">Create Gift</button>
+              </form>
             </div>
-
-            <form onSubmit={startGiftHandler} className={styles.home__center}>
-              <label className={styles.home__label} htmlFor="description">
-                Title
-              </label>
-              <input
-                onChange={(e) => setTitle(e.target.value)}
-                type="text"
-                name="title"
-                placeholder="Title"
-              />
-              <label className={styles.home__label} htmlFor="description">
-                Description
-              </label>
-              <input
-                onChange={(e) => setDescription(e.target.value)}
-                type="text"
-                name="description"
-                placeholder="Description"
-              />
-              <label className={styles.home__label} htmlFor="target">
-                Target amount
-              </label>
-              <input
-                onChange={(e) => setTarget(e.target.value)}
-                type="number"
-                name="target"
-                placeholder="00.00"
-              />
-              <label className={styles.home__label} htmlFor="you">
-                How much would you like to put in?
-              </label>
-              <input
-                onChange={(e) => setYou(e.target.value)}
-                type="number"
-                name="you"
-                placeholder="00.00"
-              />
-              <label className={styles.home__label} htmlFor="you">
-                When would you like the deadline for collection to be?
-              </label>
-              <input
-                onChange={(e) => setEndDate(e.target.value)}
-                type="date"
-                name="you"
-              />
-
-              <button type="submit">Create Gift</button>
-            </form>
           </article>
-
-          <div className={styles.home}>
-            <div className={styles.home__left}></div>
-            <div className={styles.home__right}></div>
+          <div className={styles.background}>
+            <div className={styles.background__left}></div>
+            <div className={styles.background__right}></div>
           </div>
         </div>
       )}

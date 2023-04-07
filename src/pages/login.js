@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import styles from "../styles/home.module.scss";
-import navStyles from "../styles/Navbar.module.scss";
-import logo from "../../public/Logo/Chiplogo.svg";
+import styles from "../styles/signup.module.scss";
+
+import logo from "../../public/Logo/chiplogo.webp";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -58,24 +58,20 @@ const Login = () => {
   }
 
   return (
-    <>
-      <div>
-        <article className={navStyles.navBar}>
-          <div>
-            <Link className={navStyles.navBar__logo} href="/">
-              <Image
-                className={navStyles.navBar__image}
-                height="150"
-                src={logo}
-                alt="logo"
-              />
-            </Link>
-          </div>
-          <div className={styles.home__center}>
-            <h1 className={navStyles.navBar__header}>Login</h1>
-          </div>
-
-          <form onSubmit={loginHandler} className={styles.home__center}>
+    <div className={styles.container}>
+      <article className={styles.navBar}>
+        <div>
+          <Link className={styles.navBar__logo} href="/">
+            <Image
+              className={styles.navBar__image}
+              height="250"
+              src={logo}
+              alt="logo"
+            />
+          </Link>
+        </div>
+        <div className={styles.formWrapper}>
+          <form onSubmit={loginHandler} className={styles.form}>
             <input
               onChange={(e) => setLoginEmail(e.target.value)}
               type="email"
@@ -90,14 +86,13 @@ const Login = () => {
             />
             <button type="submit">Login</button>
           </form>
-        </article>
-
-        <div className={styles.home}>
-          <div className={styles.home__left}></div>
-          <div className={styles.home__right}></div>
         </div>
+      </article>
+      <div className={styles.background}>
+        <div className={styles.background__left}></div>
+        <div className={styles.background__right}></div>
       </div>
-    </>
+    </div>
   );
 };
 

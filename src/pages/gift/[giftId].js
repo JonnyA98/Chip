@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
-import styles from "../../styles/home.module.scss";
-import navStyles from "../../styles/Navbar.module.scss";
-import logo from "../../../public/Logo/Chiplogo.svg";
+import styles from "../../styles/signup.module.scss";
+
+import logo from "../../../public/Logo/chiplogo.webp";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -98,50 +98,48 @@ const GiftDetails = () => {
       {chipped && <div></div>}
       {isLoading && <h1>LOADING...</h1>}
       {!isLoading && (
-        <div>
-          <article className={navStyles.navBar}>
+        <div className={styles.container}>
+          <article className={styles.navBar}>
             <div>
-              <Link className={navStyles.navBar__logo} href="/">
+              <Link className={styles.navBar__logo} href="/">
                 <Image
-                  className={navStyles.navBar__image}
+                  className={styles.navBar__image}
                   height="150"
                   src={logo}
                   alt="logo"
                 />
               </Link>
             </div>
-            <div className={styles.home__center}>
-              <h1 className={navStyles.navBar__header}>
+            <div className={styles.formWrapper}>
+              <h1 className={styles.formHeader}>
                 {giftData && giftData.title} for {recipientName}
               </h1>
               <p>{giftData && giftData.description}</p>
-            </div>
-
-            <div className={styles.home__center}>
-              <h2 className={navStyles.navBar__header}>
-                £{giftData && giftData.money_left} to go!
-              </h2>
-              <form onSubmit={chipHandler}>
-                <div>
-                  <label htmlFor="amount">Contribute:</label>
-                  <p>
-                    £
-                    <input
-                      onChange={(e) => setChip(e.target.value)}
-                      name="amount"
-                      min="0"
-                      type="number"
-                    />
-                  </p>
-                </div>
-                <button type="submit">Chip!</button>
-              </form>
+              <div className={styles.formWrapper}>
+                <h2 className={styles.formHeader}>
+                  £{giftData && giftData.money_left} to go!
+                </h2>
+                <form onSubmit={chipHandler} className={styles.form}>
+                  <div>
+                    <label htmlFor="amount">Contribute:</label>
+                    <p>
+                      £
+                      <input
+                        onChange={(e) => setChip(e.target.value)}
+                        name="amount"
+                        min="0"
+                        type="number"
+                      />
+                    </p>
+                  </div>
+                  <button type="submit">Chip!</button>
+                </form>
+              </div>
             </div>
           </article>
-
-          <div className={styles.home}>
-            <div className={styles.home__left}></div>
-            <div className={styles.home__right}></div>
+          <div className={styles.background}>
+            <div className={styles.background__left}></div>
+            <div className={styles.background__right}></div>
           </div>
         </div>
       )}
