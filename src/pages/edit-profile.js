@@ -47,10 +47,11 @@ const editProfile = () => {
             <Link href="/edit-profile" className={styles.headingwrapper}>
               <h1 className={styles.heading}>Edit Profile</h1>
               <Image
+                src={save}
                 height={40}
                 alt="settings"
                 className={styles.settingsimg}
-              ></Image>
+              />
             </Link>
           </nav>
         </div>
