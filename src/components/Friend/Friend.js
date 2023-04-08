@@ -39,6 +39,7 @@ const Friend = ({ friend, allUsers }) => {
       ) : (
         <Image
           height={50}
+          width={50}
           className={friendStyle.image}
           src={picture}
           alt="profile pic"
