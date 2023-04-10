@@ -118,12 +118,12 @@ const GiftDetails = () => {
             </Link>
           </nav>
 
-          <Image
+          {/* <Image
             src={getGiftImage(gift, currentUser)}
             alt="Gift progress"
             width={100}
             height={100}
-          />
+          /> */}
           <main className={styles.main}>
             <article className={styles.anotherwrapper}>
               <h1 className={styles.moretext}>
