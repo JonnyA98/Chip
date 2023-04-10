@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import styles from "../../styles/home.module.scss";
-
-import logo from "../../../public/Logo/chiplogo.webp";
+import nextpage from "../../../public/icons/nextpage.svg";
+import prevpage from "../../../public/icons/prevpage.svg";
+import logo from "../../../public/Logo/Logo.svg";
 import settings from "../../../public/icons/editProfile.svg";
 import Link from "next/link";
 import Friend from "../../components/Friend/Friend";
 import NonFriend from "../../components/NonFriend/NonFriend";
 import Pending from "../../components/Pending/Pending";
 import { useRouter } from "next/router";
-import { listItemSecondaryActionClasses } from "@mui/material";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +21,8 @@ const Profile = () => {
   const [pending, setPending] = useState(null);
   const [pendingUsers, setPendingUsers] = useState(null);
   const [displayWelcome, setDisplayWelcome] = useState(true);
+  const [addModal, setAddModal] = useState(false);
+  const [acceptedModal, setAcceptedModal] = useState(false);
 
   const [welcomeText, setWelcomeText] = useState("Welcome");
 
@@ -54,7 +56,7 @@ const Profile = () => {
     if (userData.id) {
       getUserFriends();
     }
-  }, [userData]);
+  }, [userData, acceptedModal]);
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -78,7 +80,7 @@ const Profile = () => {
       } catch (error) {}
     };
     getPendingFriendRequests();
-  }, [userData]);
+  }, [userData, acceptedModal]);
 
   useEffect(() => {
     if (allUsers && friendsList && userData.id) {
@@ -99,7 +101,6 @@ const Profile = () => {
         return { ...user, requestId: pendee.id };
       });
       setPendingUsers(pendingList);
-      console.log(pending);
     }
     return;
   }, [pending, allUsers]);
@@ -119,11 +120,22 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setDisplayWelcome(false);
     }, 2000);
-    return () => clearTimeout(timer);
   }, []);
+
+  if (acceptedModal) {
+    setTimeout(() => {
+      setAcceptedModal(false);
+    }, 2000);
+  }
+
+  if (addModal) {
+    setTimeout(() => {
+      setAddModal(false);
+    }, 2000);
+  }
 
   return (
     <>
@@ -131,11 +143,10 @@ const Profile = () => {
       {!isLoading && !displayWelcome && (
         <div className={styles.container}>
           <nav className={styles.nav}>
-            <Link href="/">
-              <Image src={logo} alt="Logo" width={150} height={150} />
+            <Link className={styles.logosmall} href="/">
+              <Image src={logo} alt="Logo" width={100} height={100} />
             </Link>
             <Link href="/edit-profile" className={styles.headingwrapper}>
-              <h1 className={styles.heading}>Edit Profile</h1>
               <Image
                 height={40}
                 src={settings}
@@ -147,12 +158,15 @@ const Profile = () => {
 
           <main className={styles.main}>
             {pendingUsers && pendingUsers.length > 0 && (
-              <section className={styles.section}>
+              <section className={styles.sectionpending}>
                 <h2 className={styles.subHeading}>Pending Requests</h2>
                 <ul className={styles.list}>
                   {pendingUsers.map((user) => (
                     <li className={styles.listItem} key={user.id}>
-                      <Pending user={user} />
+                      <Pending
+                        setAcceptedModal={setAcceptedModal}
+                        user={user}
+                      />
                     </li>
                   ))}
                 </ul>
@@ -160,19 +174,23 @@ const Profile = () => {
             )}
 
             {friendsList.length > 0 && (
-              <section className={styles.section}>
+              <section className={styles.sectionfriend}>
                 <h2 className={styles.subHeading}>Your Friends</h2>
                 <ul className={styles.list}>
                   {friendsList.map((friend) => (
                     <li className={styles.listItem} key={friend.id}>
-                      <Friend allUsers={allUsers} friend={friend} />
+                      <Friend
+                        userData={userData}
+                        allUsers={allUsers}
+                        friend={friend}
+                      />
                     </li>
                   ))}
                 </ul>
               </section>
             )}
 
-            <section className={styles.section}>
+            <section className={styles.sectionpending}>
               <h2 className={styles.subHeading}>
                 {friendsList.length
                   ? "Add Friends"
@@ -181,24 +199,31 @@ const Profile = () => {
               <ul className={styles.list}>
                 {pageNotFriends.map((person) => (
                   <li className={styles.listItem} key={person.id}>
-                    <NonFriend nonFriend={person} currentUser={userData} />
+                    <NonFriend
+                      setAddModal={setAddModal}
+                      nonFriend={person}
+                      currentUser={userData}
+                    />
                   </li>
                 ))}
               </ul>
-              {notFriends.length > pageEnd && (
-                <button className={styles.button} onClick={handleNextPage}>
-                  Next page
-                </button>
-              )}
-              {page > 1 && (
-                <button className={styles.button} onClick={handlePrevPage}>
-                  Previous page
-                </button>
-              )}
+              <div className={styles.buttonarea}>
+                {page > 1 && (
+                  <button className={styles.button} onClick={handlePrevPage}>
+                    <Image height={50} alt="prev page" src={prevpage}></Image>
+                  </button>
+                )}
+                {notFriends.length > pageEnd && (
+                  <button className={styles.button} onClick={handleNextPage}>
+                    <Image height={50} alt="next page" src={nextpage}></Image>
+                  </button>
+                )}
+              </div>
             </section>
           </main>
         </div>
       )}
+
       {displayWelcome && (
         <div className={styles.welcome}>
           <Image src={logo} alt={logo} height={250}></Image>
@@ -206,6 +231,20 @@ const Profile = () => {
             {welcomeText} {userData.name}
           </h1>
           <h2>Lets get chipping!</h2>
+        </div>
+      )}
+      {acceptedModal && (
+        <div className={styles.modalwrapper}>
+          <article className={styles.modalaccept}>
+            <h1>Friend accepted!</h1>
+          </article>
+        </div>
+      )}
+      {addModal && (
+        <div className={styles.modalwrapper}>
+          <article className={styles.modal}>
+            <h1>Friend Added</h1>
+          </article>
         </div>
       )}
     </>

@@ -5,7 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-const Friend = ({ friend, allUsers }) => {
+const Friend = ({ friend, allUsers, userData }) => {
   const [picture, setPicture] = useState(null);
   const [gifts, setGifts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,17 +19,21 @@ const Friend = ({ friend, allUsers }) => {
     setIsLoading(false);
   }, [friend]);
 
-  const showCurrentGifts = async () => {
+  const getGifts = async () => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:3001/api/gifts/reciever/${friend.id}`
+      const { data } = await axios.post(
+        `http://localhost:3001/api/gifts/reciever/${friend.id}`,
+        { userId: userData.id }
       );
+
       setGifts(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    showCurrentGifts();
+    getGifts();
   }, []);
 
   return (
@@ -56,10 +60,24 @@ const Friend = ({ friend, allUsers }) => {
               );
 
               return (
-                <Link key={gift.id} href={`/gift/${gift.id}`}>
-                  <article className={friendStyle.smallGift}>
+                <Link
+                  className={friendStyle.giftlink}
+                  key={gift.id}
+                  href={`/gift/${gift.id}`}
+                >
+                  <article
+                    className={
+                      gift.has_contributed
+                        ? friendStyle.contributed
+                        : friendStyle.nonContributed
+                    }
+                  >
                     <h4>
-                      {gift.title} started by {sender.name}
+                      {" "}
+                      <span className={friendStyle.giftTitle}>
+                        {gift.title}{" "}
+                      </span>
+                      started by {sender.name}
                     </h4>
                   </article>
                 </Link>
@@ -67,9 +85,14 @@ const Friend = ({ friend, allUsers }) => {
             })}
         </div>
         {gifts && !gifts.length && (
-          <p>
+          <p className={friendStyle.none}>
             There are no gifts for your friend,{" "}
-            <Link href={`/creategift/${friend.id}`}>start one!</Link>
+            <Link
+              className={friendStyle.start}
+              href={`/creategift/${friend.id}`}
+            >
+              start one!
+            </Link>
           </p>
         )}
       </div>

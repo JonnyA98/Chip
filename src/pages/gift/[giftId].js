@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
-import styles from "../../styles/signup.module.scss";
-
-import logo from "../../../public/Logo/chiplogo.webp";
+import styles from "../../styles/home.module.scss";
+import backarrow from "../../../public/icons/backarrow.svg";
+import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -13,6 +13,8 @@ const GiftDetails = () => {
   const [giftData, setGiftData] = useState();
   const [users, setUsers] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+
   const [recipientName, setRecipientName] = useState("");
   const [chip, setChip] = useState();
   const [userData, setUserData] = useState();
@@ -95,31 +97,44 @@ const GiftDetails = () => {
 
   return (
     <>
-      {chipped && <div></div>}
-      {isLoading && <h1>LOADING...</h1>}
-      {!isLoading && (
+      {!giftData || (!recipientName && <h1>Loading...</h1>)}
+      {giftData && recipientName && (
         <div className={styles.container}>
-          <article className={styles.navBar}>
-            <div>
-              <Link className={styles.navBar__logo} href="/">
-                <Image
-                  className={styles.navBar__image}
-                  height="150"
-                  src={logo}
-                  alt="logo"
-                />
-              </Link>
-            </div>
-            <div className={styles.formWrapper}>
-              <h1 className={styles.formHeader}>
-                {giftData && giftData.title} for {recipientName}
+          <nav className={styles.nav}>
+            <Link className={styles.logosmall} href="/">
+              <Image src={logo} alt="Logo" width={100} height={100} />
+            </Link>
+            <Link
+              href={`/profile/${userData.id}`}
+              className={styles.headingwrapper}
+            >
+              <Image
+                height={40}
+                alt="settings"
+                className={styles.saveimg}
+                src={backarrow}
+              />
+              <h1 className={styles.heading}>Cancel</h1>
+            </Link>
+          </nav>
+
+          <Image
+            src={getGiftImage(gift, currentUser)}
+            alt="Gift progress"
+            width={100}
+            height={100}
+          />
+          <main className={styles.main}>
+            <article className={styles.anotherwrapper}>
+              <h1 className={styles.moretext}>
+                {giftData.title} for {recipientName}
               </h1>
-              <p>{giftData && giftData.description}</p>
+              <p className={styles.moretext}>{giftData.description}</p>
               <div className={styles.formWrapper}>
-                <h2 className={styles.formHeader}>
-                  £{giftData && giftData.money_left} to go!
+                <h2 className={styles.moretext}>
+                  £{giftData.money_left} to go!
                 </h2>
-                <form onSubmit={chipHandler} className={styles.form}>
+                <form onSubmit={chipHandler} className={styles.moretext}>
                   <div>
                     <label htmlFor="amount">Contribute:</label>
                     <p>
@@ -135,12 +150,8 @@ const GiftDetails = () => {
                   <button type="submit">Chip!</button>
                 </form>
               </div>
-            </div>
-          </article>
-          <div className={styles.background}>
-            <div className={styles.background__left}></div>
-            <div className={styles.background__right}></div>
-          </div>
+            </article>
+          </main>
         </div>
       )}
     </>

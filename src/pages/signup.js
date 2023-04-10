@@ -3,7 +3,7 @@ import Image from "next/image";
 import axios from "axios";
 import styles from "../styles/signup.module.scss";
 
-import logo from "../../public/Logo/chiplogo.webp";
+import logo from "../../public/Logo/11.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
 

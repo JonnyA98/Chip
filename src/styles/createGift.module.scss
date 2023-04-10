@@ -1,27 +1,520 @@
 @use "../styles/partials/mixins" as *;
 @use "../styles/partials/variables" as *;
 
-.wrapper {
-  height: 80rem;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  position: sticky;
-  z-index: 30;
-  top: 0;
-  @include flex(center, center);
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.thankyou {
-  height: 40%;
-  width: 90%;
-  background-color: $primary-four;
-  &__header {
-    margin-top: 2rem;
-    text-align: center;
+.container {
+  position: relative;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logowrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.heading {
+  margin-right: 2rem;
+}
+
+.logo {
+  cursor: pointer;
+  margin-top: 6rem;
+}
+
+.logosmall {
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.link {
+  font-size: 3rem;
+}
+
+.link_login {
+  font-size: 1.25rem;
+  color: black;
+  text-decoration: none;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 2rem;
+  transition-duration: 0.4s;
+
+  &:hover {
+    color: white;
+    background-color: black;
   }
 }
 
-.mainwrapper {
+.link {
+  text-decoration: none;
+}
+
+.header {
+  font-size: 4.5rem;
+  transition-duration: 0.4s;
+  color: black;
+  text-decoration: none;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 2rem;
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+
+.sectionpending {
+  background-color: #fddb40;
+  padding: 1rem;
+}
+
+.sectionfriend {
+  background-image: linear-gradient(to bottom, #fddb40, #b4d024, #fddb40);
+  padding: 0.5rem;
+}
+
+.headingwrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  border-radius: 2rem;
+  padding: 2rem;
+  position: relative;
+  top: 0.5rem;
+  text-decoration: none;
+  color: black;
+  border: none;
+  background-color: white;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  &:hover {
+    color: white;
+    background-color: black;
+  }
+}
+.headingwrapper:hover .settingsimg,
+.headingwrapper:hover .saveimg {
+  filter: invert(1);
+}
+
+.settingsimg {
+  position: relative;
+
+  transition-duration: 0.4s;
+}
+
+.saveimg {
+  position: relative;
+  left: 0.75rem;
+  transition-duration: 0.4s;
+}
+
+.heading {
+  margin: 0;
+  width: 1000%;
+  text-align: left;
+  position: relative;
+  left: 1rem;
+}
+
+.ppwrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgWrapper {
+  position: relative;
+}
+
+.pp {
+  border-radius: 50%;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  height: auto;
+}
+
+.fileUploadWrapper {
+  text-align: center;
+}
+
+.ppbutton {
+  color: #ffffff;
+  background-color: black;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+}
+
+input[type="file"]:hover ~ .ppbutton,
+.ppbutton:hover {
+  background-color: #fddb40;
+  color: black;
+}
+
+.subHeading {
+  margin-left: 2rem;
+  margin-top: 2rem;
+
+  font-size: 4rem;
+  font-weight: 400;
+}
+
+.subsubHeading {
+  margin-top: 2rem;
+  margin-left: 2rem;
+  font-size: 2rem;
+  width: 50%;
+}
+
+.about {
+  margin: 2rem;
+}
+
+.header_small {
+  font-size: 1.25rem;
+  color: black;
+  margin-bottom: 1rem;
+  text-align: center;
+
+  padding: 1rem;
+}
+
+.textContainer {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.welcome {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10rem;
+  text-align: center;
+  &__heading {
+    width: 80%;
+    margin-bottom: 2rem;
+  }
+}
+
+.interestwrapper {
+  margin-top: 2rem;
+}
+
+.textbox {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.text {
+  width: 50%;
+  margin-right: 2rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.interestList {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.interestItem {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  margin: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  list-style: none;
+}
+
+.interestItem:nth-child(odd) {
+  background-color: #b4d024;
+}
+
+.interestItem:nth-child(even) {
+  background-color: #fddb40;
+}
+
+.removeInterestButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s;
+}
+
+.removeInterestButton:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.inputField {
+  display: inline-block;
+
+  min-width: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.addbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  height: 5rem;
+  border-radius: 2rem;
+  transition: 0.4s;
+  padding: 1rem 1rem;
+  font-size: 4rem;
+  font-weight: bold;
+  &:hover {
+    font-size: 5rem;
+  }
+}
+
+.buttonarea {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: #fddb40;
+  border: none;
+  transition: 0.4s;
+  padding: 0.2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #b4d024;
+  }
+}
+
+.buttonrecomendation {
+  border: solid black 0.1rem;
+  background-color: white;
+  transition: 0.4s;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #fddb40;
+  }
+  &:active {
+    background-color: #b4d024;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
+
+.modalwrapper {
+  height: 100%;
+  width: 100vw;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
+}
+
+.modal {
+  position: fixed;
+  background-color: #fddb40;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+.modalaccept {
+  position: fixed;
+  background-color: #b4d024;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+/* Add this at the top of your existing CSS */
+.giftContainer {
+  position: relative;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.description {
+  margin-bottom: 1rem;
+}
+
+.money {
+  margin-bottom: 1rem;
+}
+
+.giftNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.giftMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formWrapper {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.formLabel {
+  font-weight: bold;
+}
+
+.formHeader {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.dateInput {
+  width: 100%;
+}
+
+.modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+}
+
+.successHeader {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.recommendationContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.recommendationCard {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 0.1rem black solid;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recommendationHeader {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.loadingState {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.finishlink {
+  text-decoration: none;
+  border: solid black 0.1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  color: black;
 }

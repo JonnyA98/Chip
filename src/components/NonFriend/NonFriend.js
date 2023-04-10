@@ -6,7 +6,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-const NonFriend = ({ nonFriend, currentUser }) => {
+const NonFriend = ({ nonFriend, currentUser, setAddModal }) => {
   const [picture, setPicture] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,10 @@ const NonFriend = ({ nonFriend, currentUser }) => {
         send_user_id: currentUser.id,
         receive_user_id: nonFriend.id,
       });
-    } catch (error) {}
+      setAddModal(true);
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
 
   return (
@@ -36,6 +39,7 @@ const NonFriend = ({ nonFriend, currentUser }) => {
         <div>Loading...</div>
       ) : (
         <Image
+          width={50}
           height={50}
           className={friendStyle.image}
           src={picture}
@@ -44,9 +48,9 @@ const NonFriend = ({ nonFriend, currentUser }) => {
       )}
       <div className={friendStyle.nonFriendWrapper}>
         <h3 className={friendStyle.nonFriendName}>{nonFriend.name}</h3>
-        <button onClick={sendFriendRequest}>
+        <button className={friendStyle.button} onClick={sendFriendRequest}>
           <Image
-            height={20}
+            height={40}
             className={friendStyle.addImage}
             src={addFriend}
             alt="add friend"

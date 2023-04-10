@@ -2,8 +2,9 @@ import profile from "../../public/icons/profile.svg";
 import { useState, useEffect } from "react";
 import styles from "../styles/home.module.scss";
 import Link from "next/link";
-import logo from "../../public/Logo/chiplogo.webp";
+import logo from "../../public/Logo/Logo.svg";
 import save from "../../public/icons/save.svg";
+import backarrow from "../../public/icons/backarrow.svg";
 import axios from "axios";
 
 import Image from "next/image";
@@ -15,8 +16,10 @@ const editProfile = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [url, setUrl] = useState("");
   const [uploadModal, setUploadModal] = useState(false);
-  const [color, setColor] = useState("");
+  const [saveModal, setSaveModal] = useState(false);
+
   const [interest, setInterest] = useState("");
+  const [interestList, setInterestList] = useState(null);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -41,6 +44,20 @@ const editProfile = () => {
     getUserData();
   }, []);
 
+  useEffect(() => {
+    const getUserInterests = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:3001/api/users/interests/${userData.id}`
+        );
+        setInterestList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserInterests();
+  }, [userData]);
+
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -64,6 +81,9 @@ const editProfile = () => {
         setUrl(res.data);
         setPicture(res.data);
         setUploadModal(true);
+        setTimeout(() => {
+          setUploadModal(false);
+        }, 2000);
       })
       .then(() => setImageLoading(false))
       .catch(console.log);
@@ -80,23 +100,37 @@ const editProfile = () => {
     }
   };
 
+  const addInterest = () => {
+    if (interest.trim() !== "") {
+      setInterestList([...interestList, { interest }]);
+      setInterest("");
+    }
+  };
+
+  const removeInterest = (index) => {
+    setInterestList(interestList.filter((_, i) => i !== index));
+  };
+
   const handleSaveChanges = async () => {
     const authToken = sessionStorage.getItem("authToken");
     const id = userData.id;
 
     try {
       await axios.put(
-        "http://localhost:3001/api/user/update",
+        "http://localhost:3001/api/users/update",
         {
           id,
-          color,
-          interest,
+          interests: interestList,
           image_url: url || userData.image_url,
         },
         {
           headers: { authorisation: `Bearer ${authToken}` },
         }
       );
+      setSaveModal(true);
+      setTimeout(() => {
+        setSaveModal(false);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -108,26 +142,33 @@ const editProfile = () => {
       {!isLoading && (
         <div className={styles.container}>
           <nav className={styles.nav}>
-            <Link href="/">
-              <Image src={logo} alt="Logo" width={150} height={150} />
+            <Link className={styles.logosmall} href={`/profile/${userData.id}`}>
+              <Image src={logo} alt="Logo" width={100} height={100} />
             </Link>
-            <button
-              onClick={handleSaveChanges}
+            <Link
+              href={`/profile/${userData.id}`}
               className={styles.headingwrapper}
             >
-              <h1 className={styles.heading}>Save changes</h1>
               <Image
                 height={40}
                 alt="settings"
                 className={styles.saveimg}
-                src={save}
+                src={backarrow}
               />
-            </button>
+              <h1 className={styles.heading}>Cancel</h1>
+            </Link>
           </nav>
           <article>
-            <div className={styles.nav}>
-              <h1 className={styles.subHeading}>Edit Profile</h1>
-              <div className={styles.ppwrapper}>
+            <div className={styles.hero}>
+              <div>
+                <h1 className={styles.subHeading}>Edit Profile</h1>
+              </div>
+              <p className={styles.about}>
+                This is how you will appear to other users.
+              </p>
+            </div>
+            <div className={styles.ppwrapper}>
+              <div className={styles.imgWrapper}>
                 <Image
                   className={styles.pp}
                   src={picture}
@@ -135,56 +176,73 @@ const editProfile = () => {
                   height={100}
                   width={100}
                 />
-                <div className={styles.pphover}>
-                  <div className={styles.fileUploadWrapper}>
-                    <input
-                      onChange={uploadImage}
-                      type="file"
-                      id="file-upload"
-                      hidden
-                    />
-                    <label htmlFor="file-upload" className={styles.ppbutton}>
-                      Choose File
-                    </label>
-                  </div>
-                </div>
+              </div>
+              <div className={styles.fileUploadWrapper}>
+                <input
+                  onChange={uploadImage}
+                  type="file"
+                  id="file-upload"
+                  hidden
+                />
+                <label htmlFor="file-upload" className={styles.ppbutton}>
+                  Edit
+                </label>
               </div>
             </div>
+            <h2 className={styles.subsubHeading}>Your interests :</h2>
             <div className={styles.textbox}>
-              <p>Personalise your profile</p>
-              <div className={styles.textContainer}>
-                <label htmlFor="color" className={styles.header_small}>
-                  Color
-                </label>
-                <input
-                  type="text"
-                  id="color"
-                  className={styles.inputField}
-                  placeholder="Enter new color"
-                  value={color}
-                  onChange={(e) => setColor(e.target.value)}
-                />
+              <article className={styles.interestwrapper}>
+                <ul className={styles.interestList}>
+                  {interestList &&
+                    interestList.map((item, index) => (
+                      <li key={index} className={styles.interestItem}>
+                        {item.interest}
+                        <button
+                          className={styles.removeInterestButton}
+                          onClick={() => removeInterest(index)}
+                        >
+                          X
+                        </button>
+                      </li>
+                    ))}
+                </ul>
 
-                <label htmlFor="interest" className={styles.header_small}>
-                  Interest
-                </label>
-                <input
-                  type="text"
-                  id="interest"
-                  className={styles.inputField}
-                  placeholder="Enter a new interest"
-                  value={interest}
-                  onChange={(e) => setInterest(e.target.value)}
-                />
-              </div>
+                <div className={styles.textContainer}>
+                  <input
+                    type="text"
+                    className={styles.inputField}
+                    placeholder="Enter a new interest"
+                    value={interest}
+                    onChange={(e) => setInterest(e.target.value)}
+                  />
+                  <button className={styles.addbutton} onClick={addInterest}>
+                    +
+                  </button>
+                </div>
+              </article>
             </div>
+            <footer className={styles.footer}>
+              <button
+                onClick={handleSaveChanges}
+                className={styles.headingwrapper}
+              >
+                <h1 className={styles.footertext}>Save changes</h1>
+              </button>
+            </footer>
           </article>
         </div>
       )}
       {uploadModal && (
-        <div className={styles.modalWrapper}>
-          <article>
+        <div className={styles.modalwrapper}>
+          <article className={styles.modal}>
             <h2>Upload Successful!</h2>
+          </article>
+        </div>
+      )}
+      {saveModal && (
+        <div className={styles.modalwrapper}>
+          <article className={styles.modal}>
+            <h2>Changes Saved ✅</h2>
           </article>
         </div>
       )}

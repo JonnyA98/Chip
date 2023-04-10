@@ -13,7 +13,7 @@
 
 .image {
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 2rem;
 }
 
 .nonFriendWrapper {
@@ -25,10 +25,24 @@
 .nonFriendName {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+  color: black;
+  margin-bottom: 1rem;
+  background-color: #fddb40;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
 .addImage {
   cursor: pointer;
+}
+
+.button {
+  background-color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: 0.4s;
+  &:hover {
+    background-color: #fddb40;
+  }
 }

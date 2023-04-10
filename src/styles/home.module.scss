@@ -7,6 +7,23 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .logowrapper {
@@ -14,12 +31,14 @@
   justify-content: center;
 }
 
-.heading {
-  margin-right: 2rem;
-}
-
 .logo {
   cursor: pointer;
+  margin-top: 6rem;
+}
+
+.logosmall {
+  margin-top: 2rem;
+  margin-left: 1rem;
 }
 
 .link {
@@ -59,12 +78,22 @@
   }
 }
 
+.sectionpending {
+  background-color: #fddb40;
+  padding: 1rem;
+}
+
+.sectionfriend {
+  background-image: linear-gradient(to bottom, #fddb40, #b4d024, #fddb40);
+  padding: 0.5rem;
+}
+
 .headingwrapper {
   display: flex;
   align-items: center;
   margin-right: 1rem;
   border-radius: 2rem;
-  padding: 1rem;
+  padding: 2rem;
   position: relative;
   top: 0.5rem;
   text-decoration: none;
@@ -104,30 +133,25 @@
 }
 
 .ppwrapper {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  overflow: hidden;
+.imgWrapper {
+  position: relative;
 }
 
 .pp {
   border-radius: 50%;
-  margin: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
   height: auto;
 }
 
-.pphover {
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  width: 80%;
-  height: 80%;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s;
+.fileUploadWrapper {
+  text-align: center;
 }
 
 .ppbutton {
@@ -147,15 +171,26 @@
 
 input[type="file"]:hover ~ .ppbutton,
 .ppbutton:hover {
-  background-color: yellow;
+  background-color: #fddb40;
   color: black;
 }
 
-.ppwrapper:hover .pphover {
-  opacity: 1;
+.subHeading {
+  margin-left: 2rem;
+  margin-top: 2rem;
+
+  font-size: 4rem;
+  font-weight: 400;
 }
 
-.subHeading {
+.subsubHeading {
+  margin-top: 2rem;
+  margin-left: 2rem;
+  font-size: 2rem;
+  width: 50%;
+}
+
+.about {
   margin: 2rem;
 }
 
@@ -171,7 +206,9 @@ input[type="file"]:hover ~ .ppbutton,
 .textContainer {
   text-align: center;
   margin-bottom: 2rem;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 1rem;
 }
 
@@ -188,11 +225,13 @@ input[type="file"]:hover ~ .ppbutton,
   }
 }
 
+.interestwrapper {
+  margin-top: 2rem;
+}
+
 .textbox {
   display: flex;
-  flex-direction: column;
-  width: 50%;
-  text-align: center;
+  justify-content: space-evenly;
 }
 
 .text {
@@ -200,9 +239,54 @@ input[type="file"]:hover ~ .ppbutton,
   margin-right: 2rem;
 }
 
+.list {
+  list-style: none;
+}
+
+.interestList {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.interestItem {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  margin: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  list-style: none;
+}
+
+.interestItem:nth-child(odd) {
+  background-color: #b4d024;
+}
+
+.interestItem:nth-child(even) {
+  background-color: #fddb40;
+}
+
+.removeInterestButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s;
+}
+
+.removeInterestButton:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
 .inputField {
-  display: block;
-  width: 100%;
+  display: inline-block;
+
+  min-width: 1rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
@@ -211,17 +295,81 @@ input[type="file"]:hover ~ .ppbutton,
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
-  margin-bottom: 1rem;
+}
+
+.addbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  height: 5rem;
+  border-radius: 2rem;
+  transition: 0.4s;
+  padding: 1rem 1rem;
+  font-size: 4rem;
+  font-weight: bold;
+  &:hover {
+    font-size: 5rem;
+  }
+}
+
+.buttonarea {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: #fddb40;
+  border: none;
+  transition: 0.4s;
+  padding: 0.2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #b4d024;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4rem;
 }
 
 .modalwrapper {
-  height: 100vh;
+  height: 100%;
   width: 100vw;
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
   top: 0;
-  background: rgba(0, 0, 0, 0.7);
+}
+
+.modal {
+  position: fixed;
+  background-color: #fddb40;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+.modalaccept {
+  position: fixed;
+  background-color: #b4d024;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+.anotherwrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.moretext {
+  margin: 1rem;
 }

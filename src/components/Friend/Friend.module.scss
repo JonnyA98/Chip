@@ -18,24 +18,31 @@
 
 .friendWrapper {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .friendName {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.giftWrapper {
-  margin-top: 10px;
+  color: black;
+  background-color: #b4d024;
+  display: inline;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .giftHeading {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
+  color: black;
+  margin-bottom: 0.5rem;
+  background-color: #fddb40;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 1rem;
 }
 
 .smallGift {
@@ -46,5 +53,54 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.none {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  line-height: 3rem;
+  border: solid 0.1rem black;
+}
+
+.start {
+  text-decoration: none;
+  color: black;
+  background-color: #b4d024;
+  border-radius: 2rem;
+  padding: 0.5rem;
+  transition: 0.4s;
+  &:hover {
+    font-size: 2rem;
+  }
+}
+
+.contributed {
+  background-color: #b4d024;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  color: black;
+  margin-bottom: 0.5rem;
+}
+
+.nonContributed {
+  background-color: #fddb40;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  color: black;
+  margin-bottom: 0.5rem;
+}
+
+.giftTitle {
+  transition: 0.4s;
+}
+
+.giftlink {
+  text-decoration: none;
+  color: black;
+  transition: 0.4s;
+  &:hover .giftTitle {
+    font-size: 2rem;
   }
 }

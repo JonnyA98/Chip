@@ -9,18 +9,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
+  padding: 2rem 0;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 100vh;
 }
 
 .navBar__logo {
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
 }
 
 .navBar__image {
   cursor: pointer;
+  margin-top: 2rem;
 }
 
 .formWrapper {
@@ -42,11 +43,12 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin: 3rem;
 }
 
 .form input {
   font-size: 1rem;
-  padding: 5px 10px;
+  padding: 0.5rem 1rem;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -55,13 +57,13 @@
 
 .form button {
   font-size: 2rem;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
   background-color: white;
   border: none;
   border-radius: 2rem;
   color: black;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 1rem;
   transition-duration: 0.4s;
 
   &:hover {
@@ -70,24 +72,6 @@
   }
 }
 
-.background {
-  display: flex;
-  justify-content: space-between;
-}
-
-.background__left,
-.background__right {
-  flex: 1;
-  height: calc(100vh - 100px);
-}
-
-.background__left {
-  background-color: #f0f0f0;
-}
-
-.background__right {
-  background-color: #fafafa;
-}
 .formLabel {
   font-size: 1rem;
   color: #333;

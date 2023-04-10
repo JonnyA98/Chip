@@ -6,7 +6,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
-const Pending = ({ user }) => {
+const Pending = ({ user, setAcceptedModal }) => {
   const [picture, setPicture] = useState(null);
   const [gifts, setGifts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +26,7 @@ const Pending = ({ user }) => {
       await axios.patch(
         `http://localhost:3001/api/users/friend-accept/${user.requestId}`
       );
+      setAcceptedModal(true);
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +38,8 @@ const Pending = ({ user }) => {
         <div>Loading...</div>
       ) : (
         <Image
-          height={50}
+          width={100}
+          height={100}
           className={friendStyle.image}
           src={picture}
           alt="profile pic"
@@ -47,7 +49,7 @@ const Pending = ({ user }) => {
         <h3 className={friendStyle.pendingFriendName}>{user.name}</h3>
         <div className={friendStyle.actionWrapper}>
           <button onClick={acceptHandler}>
-            <Image height={20} src={accept} alt="accept"></Image>
+            <Image height={50} src={accept} alt="accept"></Image>
           </button>
         </div>
       </div>
