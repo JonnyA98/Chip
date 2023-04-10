@@ -202,9 +202,8 @@ const GiftDetails = () => {
                 <h2 className={styles.moretext}>
                   £{giftData.money_left} to go!
                 </h2>
-                <form onSubmit={chipHandler} className={styles.moretext}>
+                <form onSubmit={chipHandler} className={styles.formdiv}>
                   <div>
-                    <label htmlFor="amount">Contribute:</label>
                     <p>
                       £
                       <input
@@ -215,7 +214,9 @@ const GiftDetails = () => {
                       />
                     </p>
                   </div>
-                  <button type="submit">Chip!</button>
+                  <button className={styles.chip} type="submit">
+                    Chip!
+                  </button>
                 </form>
               </div>
             </article>

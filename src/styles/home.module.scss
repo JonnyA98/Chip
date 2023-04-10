@@ -369,14 +369,35 @@ input[type="file"]:hover ~ .ppbutton,
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .moretext {
   margin: 1rem;
+  text-align: center;
 }
 
 .main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.formdiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.chip {
+  margin: 2rem;
+  font-size: 4rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: #fddb40;
+  transition: 0.4s;
+  &:hover {
+    background-color: #b4d024;
+  }
 }
