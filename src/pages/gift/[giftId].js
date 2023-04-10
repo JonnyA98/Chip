@@ -3,6 +3,16 @@ import Image from "next/image";
 import axios from "axios";
 import styles from "../../styles/home.module.scss";
 import backarrow from "../../../public/icons/backarrow.svg";
+import onenotin from "../../../public/progress/1_notin.svg";
+import two from "../../../public/progress/2.svg";
+import fiftynotin from "../../../public/progress/50_notin.svg";
+import seven5notin from "../../../public/progress/75_notin.svg";
+import hundred from "../../../public/progress/100.svg";
+import started from "../../../public/progress/started_0.svg";
+import started_2 from "../../../public/progress/started_2.svg";
+import started_75 from "../../../public/progress/started_75.svg";
+import started_100 from "../../../public/progress/started_100.svg";
+import seven5 from "../../../public/progress/75.svg";
 import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,6 +31,9 @@ const GiftDetails = () => {
   const { giftId } = router.query;
   const [errorMessage, setErrorMessage] = useState("");
   const [chipped, setChipped] = useState(false);
+  const [chipData, setChipData] = useState(null);
+  const [progress, setProgress] = useState(null);
+  const [percentage, setPercentage] = useState(null);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -55,7 +68,14 @@ const GiftDetails = () => {
       const { data } = await axios.get(
         `http://localhost:3001/api/gifts/gift/${giftId}`
       );
+
+      const { data: chipdata } = await axios.get(
+        `http://localhost:3001/api/gifts/chips/${giftId}`
+      );
+
+      setChipData(chipdata);
       setGiftData(data[0]);
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -70,8 +90,56 @@ const GiftDetails = () => {
     if (giftData && users) {
       const recipient = users.find((user) => user.id === giftData.recipient_id);
       setRecipientName(recipient.name);
+      setPercentage(
+        ((giftData.target_money - giftData.money_left) /
+          giftData.target_money) *
+          100
+      );
     }
   }, [giftData, users]);
+
+  useEffect(() => {
+    console.log("giftData:", giftData);
+    console.log("percentage:", percentage);
+    console.log("userData:", userData);
+    console.log("chipData:", chipData);
+    if (giftData && percentage && userData && chipData) {
+      const userNotChipped = chipData.some(
+        (chip) => chip.user_id !== userData.id
+      );
+      if (giftData.sender_id !== userData.id && userNotChipped) {
+        if (percentage < 50) {
+          setProgress(onenotin);
+        } else if (percentage < 75) {
+          setProgress(fiftynotin);
+        } else {
+          setProgress(seven5notin);
+        }
+      } else {
+        if (!chipData.length) {
+          setProgress(started);
+        } else if (percentage <= 50) {
+          if (giftData.sender_id === userData.id) {
+            setProgress(started_2);
+          } else {
+            setProgress(two);
+          }
+        } else if (percentage < 100) {
+          if (giftData.sender_id === userData.id) {
+            setProgress(started_75);
+          } else {
+            setProgress(seven5);
+          }
+        } else {
+          if (giftData.sender_id === userData.id) {
+            setProgress(started_100);
+          } else {
+            setProgress(hundred);
+          }
+        }
+      }
+    }
+  }, [giftData, userData, percentage, chipData]);
 
   const chipHandler = async (e) => {
     e.preventDefault();
@@ -98,7 +166,7 @@ const GiftDetails = () => {
   return (
     <>
       {!giftData || (!recipientName && <h1>Loading...</h1>)}
-      {giftData && recipientName && (
+      {giftData && recipientName && progress && (
         <div className={styles.container}>
           <nav className={styles.nav}>
             <Link className={styles.logosmall} href="/">
@@ -118,13 +186,13 @@ const GiftDetails = () => {
             </Link>
           </nav>
 
-          {/* <Image
-            src={getGiftImage(gift, currentUser)}
-            alt="Gift progress"
-            width={100}
-            height={100}
-          /> */}
           <main className={styles.main}>
+            <Image
+              src={progress}
+              alt="Gift progress"
+              width={250}
+              height={250}
+            />
             <article className={styles.anotherwrapper}>
               <h1 className={styles.moretext}>
                 {giftData.title} for {recipientName}

@@ -67,7 +67,7 @@ const Friend = ({ friend, allUsers, userData }) => {
                 >
                   <article
                     className={
-                      gift.has_contributed
+                      gift.has_contributed || userData.id === gift.sender_id
                         ? friendStyle.contributed
                         : friendStyle.nonContributed
                     }
