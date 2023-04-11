@@ -13,8 +13,10 @@ import started_2 from "../../../public/progress/started_2.svg";
 import started_75 from "../../../public/progress/started_75.svg";
 import started_100 from "../../../public/progress/started_100.svg";
 import seven5 from "../../../public/progress/75.svg";
+import Confetti from "react-confetti";
 import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
+
 import { useRouter } from "next/router";
 
 const GiftDetails = () => {
@@ -88,9 +90,10 @@ const GiftDetails = () => {
 
   useEffect(() => {
     if (giftData && users) {
-      if (giftData.money_left >= giftData.target_money) {
+      if (giftData.money_left <= 0) {
         setGiftCompleted(true);
       }
+
       const recipient = users.find((user) => user.id === giftData.recipient_id);
       setRecipientName(recipient.name);
       setPercentage(
@@ -102,10 +105,6 @@ const GiftDetails = () => {
   }, [giftData, users]);
 
   useEffect(() => {
-    console.log("giftData:", giftData);
-    console.log("percentage:", percentage);
-    console.log("userData:", userData);
-    console.log("chipData:", chipData);
     if (giftData && percentage && userData && chipData) {
       const userNotChipped = chipData.some(
         (chip) => chip.user_id !== userData.id
@@ -224,6 +223,19 @@ const GiftDetails = () => {
               </div>
             </article>
           </main>
+        </div>
+      )}
+      {giftCompleted && giftData && (
+        <div className={styles.confettiContainer}>
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+          <div className={styles.confettibox}>
+            <h1>You did it!</h1>
+            <h2>You were part of something incredible!</h2>
+          </div>
+
+          <Link className={styles.backlink} href={`/profile/${userData.id}`}>
+            Back to dashboard
+          </Link>
         </div>
       )}
     </>

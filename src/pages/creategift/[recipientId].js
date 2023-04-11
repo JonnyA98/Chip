@@ -6,6 +6,7 @@ import backarrow from "../../../public/icons/backarrow.svg";
 import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import PulseLoader from "react-spinners/PulseLoader";
 
 const createGift = () => {
   const [title, setTitle] = useState("");
@@ -146,14 +147,21 @@ const createGift = () => {
 
   return (
     <>
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && (
+        <PulseLoader className={styles.colorchangingloader} size={15} />
+      )}
       {giftCreated && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <h1 className={styles.successHeader}>Gift Created Successfully!</h1>
             <p>Thank you for starting something special!</p>
-            <Link href={`/profile/${userData.id}`}>
-              Go back home to start another gift or Chip!
+            <Link
+              className={styles.successlinkwrap}
+              href={`/profile/${userData.id}`}
+            >
+              <p className={styles.successLink}>
+                Go back home to start another gift or Chip!
+              </p>
             </Link>
           </div>
         </div>
@@ -179,11 +187,20 @@ const createGift = () => {
           </nav>
           <main className={styles.main}>
             {isFetchingRecommendations ? (
-              <p className={styles.loadingState}>Loading recommendations...</p>
+              <article className={styles.loadingwrapper}>
+                <p className={styles.alternateColorSpinner}>
+                  Loading recommended gifts based on your friends interests!
+                </p>
+                <PulseLoader
+                  color="#fddb40"
+                  className={styles.alternateColorSpinner}
+                  size={15}
+                />
+              </article>
             ) : (
               <section className={styles.recommendationContainer}>
                 {recommendations.map((recommendation, index) => (
-                  <div
+                  <button
                     className={styles.recommendationCard}
                     key={index}
                     onClick={() => onRecommendationClick(recommendation)}
@@ -192,10 +209,7 @@ const createGift = () => {
                     <h1>{recommendation.title}</h1>
                     <p>{recommendation.description}</p>
                     <p>£{recommendation.target_money}</p>
-                    <button className={styles.buttonrecomendation}>
-                      Select
-                    </button>
-                  </div>
+                  </button>
                 ))}
               </section>
             )}
@@ -208,57 +222,64 @@ const createGift = () => {
               </button>
             )}
             {showForm && (
-              <div className={styles.formWrapper}>
-                <h1 className={styles.formHeader}>Create a Gift</h1>
-                <form onSubmit={startGiftHandler} className={styles.form}>
-                  <label className={styles.formLabel} htmlFor="description">
-                    Title
-                  </label>
-                  <input
-                    onChange={(e) => setTitle(e.target.value)}
-                    type="text"
-                    name="title"
-                    value={title}
-                  />
-                  <label className={styles.formLabel} htmlFor="description">
-                    Description
-                  </label>
-                  <input
-                    onChange={(e) => setDescription(e.target.value)}
-                    type="text"
-                    name="description"
-                    value={description}
-                  />
-                  <label className={styles.formLabel} htmlFor="target">
-                    Target amount
-                  </label>
-                  <input
-                    onChange={(e) => setTarget(e.target.value)}
-                    type="number"
-                    name="target"
-                    value={target}
-                  />
-                  <label className={styles.formLabel} htmlFor="you">
-                    How much would you like to put in?
-                  </label>
-                  <input
-                    onChange={(e) => setYou(e.target.value)}
-                    type="number"
-                    name="you"
-                    placeholder="00.00"
-                  />
-                  <label className={styles.formLabel} htmlFor="you">
-                    When would you like the deadline for collection to be?
-                  </label>
-                  <input
-                    onChange={(e) => setEndDate(e.target.value)}
-                    type="date"
-                    name="you"
-                    className={styles.dateInput}
-                  />
-                  <button type="submit">Create Gift</button>
-                </form>
-              </div>
+              <article className={styles.recommendationContainer}>
+                <div className={styles.recommendationCard}>
+                  <h1 className={styles.formHeader}>Create a Gift</h1>
+                  <form onSubmit={startGiftHandler} className={styles.form}>
+                    <label className={styles.formLabel} htmlFor="description">
+                      Title
+                    </label>
+                    <input
+                      onChange={(e) => setTitle(e.target.value)}
+                      type="text"
+                      name="title"
+                      value={title}
+                    />
+                    <label className={styles.formLabel} htmlFor="description">
+                      Description
+                    </label>
+                    <input
+                      onChange={(e) => setDescription(e.target.value)}
+                      type="text"
+                      name="description"
+                      value={description}
+                    />
+                    <label className={styles.formLabel} htmlFor="target">
+                      Target amount
+                    </label>
+                    <input
+                      onChange={(e) => setTarget(e.target.value)}
+                      type="number"
+                      name="target"
+                      value={target}
+                    />
+                    <label className={styles.formLabel} htmlFor="you">
+                      How much would you like to put in?
+                    </label>
+                    <input
+                      onChange={(e) => setYou(e.target.value)}
+                      type="number"
+                      name="you"
+                      placeholder="00.00"
+                    />
+                    <label className={styles.formLabel} htmlFor="you">
+                      When would you like the deadline for collection to be?
+                    </label>
+                    <input
+                      onChange={(e) => setEndDate(e.target.value)}
+                      type="date"
+                      name="you"
+                      className={styles.dateInput}
+                    />
+                    <button
+                      className={styles.buttonrecomendation}
+                      type="submit"
+                    >
+                      Create Gift
+                    </button>
+                  </form>
+                </div>
+              </article>
             )}
           </main>
         </div>
