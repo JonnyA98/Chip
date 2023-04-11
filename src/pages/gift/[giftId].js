@@ -24,7 +24,7 @@ const GiftDetails = () => {
   const [users, setUsers] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-
+  const [giftCompleted, setGiftCompleted] = useState(false);
   const [recipientName, setRecipientName] = useState("");
   const [chip, setChip] = useState();
   const [userData, setUserData] = useState();
@@ -88,6 +88,9 @@ const GiftDetails = () => {
 
   useEffect(() => {
     if (giftData && users) {
+      if (giftData.money_left >= giftData.target_money) {
+        setGiftCompleted(true);
+      }
       const recipient = users.find((user) => user.id === giftData.recipient_id);
       setRecipientName(recipient.name);
       setPercentage(
