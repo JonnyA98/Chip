@@ -226,7 +226,12 @@ const Profile = () => {
 
       {displayWelcome && (
         <div className={styles.welcome}>
-          <Image src={logo} alt={logo} height={250}></Image>
+          <Image
+            className={styles.welcome__image}
+            src={logo}
+            alt={logo}
+            height={250}
+          ></Image>
           <h1 className={styles.welcome__heading}>
             {welcomeText} {userData.name}
           </h1>

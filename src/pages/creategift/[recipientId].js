@@ -7,6 +7,17 @@ import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import PulseLoader from "react-spinners/PulseLoader";
+import { loadStripe } from "@stripe/stripe-js";
+import StripeForm from "../../components/StripeForm/StripeForm";
+
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51MqMotD7x5DQT6pFSyJECz2KkzKc58OkyWUyDelnjAt6xYb5j2J1i54KoMnyIqWCiAUF2QFDaI1sKG8Ts6AVRQtW00C97JVYz4"
+);
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const createGift = () => {
   const [title, setTitle] = useState("");
@@ -18,12 +29,12 @@ const createGift = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [userData, setUserData] = useState(null);
   const [nonUserData, setNonUserData] = useState(null);
-  const [giftCreated, setGiftCreated] = useState(false);
+  const [chipDone, setChipDone] = useState(false);
   const [interests, setInterests] = useState(null);
-  const [isFetchingRecommendations, setIsFetchingRecommendations] =
-    useState(true);
+  const [hasInterests, setHasInterests] = useState(false);
   const [recommendations, setRecommendations] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [showStripeForm, setShowStripeForm] = useState(false);
 
   const router = useRouter();
   const { recipientId } = router.query;
@@ -35,22 +46,7 @@ const createGift = () => {
       return;
     }
 
-    try {
-      await axios.post(`http://localhost:3001/api/gifts/create`, {
-        title: title,
-        description: description,
-        sender_id: Number(userData.id),
-        recipient_id: Number(recipientId),
-        target_money: target,
-        money_left: target - you,
-        end_date: endDate,
-      });
-
-      setGiftCreated(true);
-    } catch (error) {
-      console.log(error.response);
-      setErrorMessage(error.response.data.message);
-    }
+    setShowStripeForm(true);
   };
 
   const getUserData = async () => {
@@ -71,7 +67,6 @@ const createGift = () => {
         `http://localhost:3001/api/non-user/${recipientId}`
       );
       setNonUserData(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +81,14 @@ const createGift = () => {
 
         const interestsArray = data.map((item) => item.interest);
         setInterests(interestsArray);
+        console.log("Interests array:", interestsArray);
+        if (interestsArray.length !== 0) {
+          console.log("Setting hasInterests to true");
+          setHasInterests(true);
+        } else {
+          console.log("Setting hasInterests to false");
+          setHasInterests(false);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -93,7 +96,7 @@ const createGift = () => {
   };
 
   const getGiftRecommendations = async (recinterests) => {
-    if (recinterests) {
+    if (recinterests && recinterests.length > 0) {
       try {
         const { data } = await axios.post(
           "http://localhost:3001/api/gifts/recommendation",
@@ -109,13 +112,34 @@ const createGift = () => {
           console.error("Received data is not an array.");
           console.log(data);
         }
-        setIsFetchingRecommendations(false);
+        // Move this line here
         console.log("getRecipientInterests called");
       } catch (error) {
         console.error("Failed to fetch gift recommendations:", error);
       }
     }
   };
+
+  useEffect(() => {
+    const postGift = async () => {
+      try {
+        await axios.post(`http://localhost:3001/api/gifts/create`, {
+          title: title,
+          description: description,
+          sender_id: Number(userData.id),
+          recipient_id: Number(recipientId),
+          target_money: target,
+          money_left: target - you,
+          end_date: endDate,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (chipDone) {
+      postGift();
+    }
+  }, [chipDone]);
 
   useEffect(() => {
     getRecipientDetails();
@@ -130,9 +154,7 @@ const createGift = () => {
     getGiftRecommendations(interests);
   }, [interests]);
 
-  useEffect(() => {
-    console.log(recommendations);
-  }, [recommendations]);
+  useEffect(() => {}, [recommendations]);
 
   const onRecommendationClick = (recommendation) => {
     setTitle(recommendation.title);
@@ -150,9 +172,10 @@ const createGift = () => {
       {isLoading && (
         <PulseLoader className={styles.colorchangingloader} size={15} />
       )}
-      {giftCreated && (
+      {chipDone && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
+            <h2 className={styles.successHeader}>Payment accepted! ✅</h2>
             <h1 className={styles.successHeader}>Gift Created Successfully!</h1>
             <p>Thank you for starting something special!</p>
             <Link
@@ -186,39 +209,51 @@ const createGift = () => {
             </Link>
           </nav>
           <main className={styles.main}>
-            {isFetchingRecommendations ? (
-              <article className={styles.loadingwrapper}>
-                <p className={styles.alternateColorSpinner}>
-                  Loading recommended gifts based on your friends interests!
-                </p>
-                <PulseLoader
-                  color="#fddb40"
-                  className={styles.alternateColorSpinner}
-                  size={15}
-                />
-              </article>
+            {!recommendations ? (
+              hasInterests && (
+                <article className={styles.loadingwrapper}>
+                  <p className={styles.alternateColorSpinner}>
+                    Loading recommended gifts based on your friends interests!
+                  </p>
+                  <PulseLoader
+                    color="#fddb40"
+                    className={styles.alternateColorSpinner}
+                    size={15}
+                  />
+                </article>
+              )
             ) : (
-              <section className={styles.recommendationContainer}>
-                {recommendations.map((recommendation, index) => (
-                  <button
-                    className={styles.recommendationCard}
-                    key={index}
-                    onClick={() => onRecommendationClick(recommendation)}
-                  >
-                    {" "}
-                    <h1>{recommendation.title}</h1>
-                    <p>{recommendation.description}</p>
-                    <p>£{recommendation.target_money}</p>
-                  </button>
-                ))}
-              </section>
+              <>
+                {hasInterests
+                  ? recommendations && (
+                      <section className={styles.recommendationContainer}>
+                        {recommendations.map((recommendation, index) => (
+                          <button
+                            className={styles.recommendationCard}
+                            key={index}
+                            onClick={() =>
+                              onRecommendationClick(recommendation)
+                            }
+                          >
+                            <h1>{recommendation.title}</h1>
+                            <p>{recommendation.description}</p>
+                            <p>£{recommendation.target_money}</p>
+                          </button>
+                        ))}
+                      </section>
+                    )
+                  : null}
+              </>
             )}
-            {!showForm && (
+
+            {!showForm && nonUserData && (
               <button
-                className={styles.buttonrecomendation}
+                className={styles.createbutton}
                 onClick={onCreateOwnGiftClick}
               >
-                I would rather make my own gift
+                {hasInterests
+                  ? "I would rather choose my own gift"
+                  : "Start Creating Gift"}
               </button>
             )}
             {showForm && (
@@ -230,6 +265,7 @@ const createGift = () => {
                       Title
                     </label>
                     <input
+                      className={styles.title}
                       onChange={(e) => setTitle(e.target.value)}
                       type="text"
                       name="title"
@@ -238,7 +274,8 @@ const createGift = () => {
                     <label className={styles.formLabel} htmlFor="description">
                       Description
                     </label>
-                    <input
+                    <textarea
+                      className={styles.description}
                       onChange={(e) => setDescription(e.target.value)}
                       type="text"
                       name="description"
@@ -262,15 +299,18 @@ const createGift = () => {
                       name="you"
                       placeholder="00.00"
                     />
-                    <label className={styles.formLabel} htmlFor="you">
+                    <label className={styles.formLabel} htmlFor="date">
                       When would you like the deadline for collection to be?
                     </label>
-                    <input
-                      onChange={(e) => setEndDate(e.target.value)}
-                      type="date"
-                      name="you"
-                      className={styles.dateInput}
-                    />
+                    <div className={styles.datewrapper}>
+                      <input
+                        type="date"
+                        onChange={(e) => setEndDate(e.target.value)}
+                        name="date"
+                        className={styles.customDatepicker}
+                      />
+                    </div>
+
                     <button
                       className={styles.buttonrecomendation}
                       type="submit"
@@ -282,6 +322,20 @@ const createGift = () => {
               </article>
             )}
           </main>
+        </div>
+      )}
+      {showStripeForm && (
+        <div className={styles.modal}>
+          <article className={styles.modalContent}>
+            <h2>Make Payment</h2>
+            <Elements stripe={stripePromise}>
+              <StripeForm
+                setShowStripeForm={setShowStripeForm}
+                amount={you * 100}
+                setChipDone={setChipDone}
+              />
+            </Elements>
+          </article>
         </div>
       )}
     </>

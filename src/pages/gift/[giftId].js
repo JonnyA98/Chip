@@ -16,6 +16,13 @@ import seven5 from "../../../public/progress/75.svg";
 import Confetti from "react-confetti";
 import logo from "../../../public/Logo/Logo.svg";
 import Link from "next/link";
+import { loadStripe } from "@stripe/stripe-js";
+import StripeForm from "../../components/StripeForm/StripeForm";
+import { Elements } from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51MqMotD7x5DQT6pFSyJECz2KkzKc58OkyWUyDelnjAt6xYb5j2J1i54KoMnyIqWCiAUF2QFDaI1sKG8Ts6AVRQtW00C97JVYz4"
+);
 
 import { useRouter } from "next/router";
 
@@ -32,10 +39,11 @@ const GiftDetails = () => {
   const [userData, setUserData] = useState();
   const { giftId } = router.query;
   const [errorMessage, setErrorMessage] = useState("");
-  const [chipped, setChipped] = useState(false);
+  const [chipDone, setChipDone] = useState(false);
   const [chipData, setChipData] = useState(null);
   const [progress, setProgress] = useState(null);
   const [percentage, setPercentage] = useState(null);
+  const [showStripeForm, setShowStripeForm] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -91,7 +99,10 @@ const GiftDetails = () => {
   useEffect(() => {
     if (giftData && users) {
       if (giftData.money_left <= 0) {
-        setGiftCompleted(true);
+        setTimeout(() => {
+          setChipDone(false);
+          setGiftCompleted(true);
+        }, 500);
       }
 
       const recipient = users.find((user) => user.id === giftData.recipient_id);
@@ -106,10 +117,11 @@ const GiftDetails = () => {
 
   useEffect(() => {
     if (giftData && percentage && userData && chipData) {
-      const userNotChipped = chipData.some(
+      const userNotChipped = chipData.every(
         (chip) => chip.user_id !== userData.id
       );
-      if (giftData.sender_id !== userData.id && userNotChipped) {
+
+      if (userNotChipped) {
         if (percentage < 50) {
           setProgress(onenotin);
         } else if (percentage < 75) {
@@ -147,28 +159,38 @@ const GiftDetails = () => {
     e.preventDefault();
     if (!chip) {
       setErrorMessage("You must Chip to chip!");
+      return;
     }
-    try {
-      await axios.post(`http://localhost:3001/api/gifts/chip`, {
-        user_id: userData.id,
-        gift_id: giftId,
-        chip_amount: chip,
-      });
-      await axios.patch(`http://localhost:3001/api/gifts/edit-gift`, {
-        gift_id: giftId,
-        chip_amount: chip,
-      });
-      getGiftDetails();
-      setChipped(true);
-    } catch (error) {
-      console.log(error);
-    }
+    setShowStripeForm(true);
   };
+
+  useEffect(() => {
+    const finalChip = async () => {
+      try {
+        await axios.post(`http://localhost:3001/api/gifts/chip`, {
+          user_id: userData.id,
+          gift_id: giftId,
+          chip_amount: chip,
+        });
+        await axios.patch(`http://localhost:3001/api/gifts/edit-gift`, {
+          gift_id: giftId,
+          chip_amount: chip,
+        });
+        getGiftDetails();
+        setChipped(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (chipDone) {
+      finalChip();
+    }
+  }, [chipDone]);
 
   return (
     <>
-      {!giftData || (!recipientName && <h1>Loading...</h1>)}
-      {giftData && recipientName && progress && (
+      {!giftData || (!recipientName && isLoading && <h1>Loading...</h1>)}
+      {giftData && recipientName && progress && !isLoading && (
         <div className={styles.container}>
           <nav className={styles.nav}>
             <Link className={styles.logosmall} href="/">
@@ -225,6 +247,23 @@ const GiftDetails = () => {
           </main>
         </div>
       )}
+      {chipDone && (
+        <div className={styles.chipmodal}>
+          <div className={styles.modalContent}>
+            <h2 className={styles.successHeader}>Payment accepted! ✅</h2>
+
+            <p>Thank you for joining in!</p>
+            <Link
+              className={styles.successlinkwrap}
+              href={`/profile/${userData.id}`}
+            >
+              <p className={styles.successLink}>
+                Go back home to start another gift or Chip!
+              </p>
+            </Link>
+          </div>
+        </div>
+      )}
       {giftCompleted && giftData && (
         <div className={styles.confettiContainer}>
           <Confetti width={window.innerWidth} height={window.innerHeight} />
@@ -236,6 +275,20 @@ const GiftDetails = () => {
           <Link className={styles.backlink} href={`/profile/${userData.id}`}>
             Back to dashboard
           </Link>
+        </div>
+      )}
+      {showStripeForm && (
+        <div className={styles.chipmodal}>
+          <article className={styles.modalContent}>
+            <h2>Payment</h2>
+            <Elements stripe={stripePromise}>
+              <StripeForm
+                setShowStripeForm={setShowStripeForm}
+                amount={chip * 100}
+                setChipDone={setChipDone}
+              />
+            </Elements>
+          </article>
         </div>
       )}
     </>

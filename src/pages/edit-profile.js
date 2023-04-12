@@ -224,7 +224,7 @@ const editProfile = () => {
             <footer className={styles.footer}>
               <button
                 onClick={handleSaveChanges}
-                className={styles.headingwrapper}
+                className={styles.footerwrapper}
               >
                 <h1 className={styles.footertext}>Save changes</h1>
               </button>

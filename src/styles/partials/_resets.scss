@@ -12,6 +12,9 @@
 
 html {
   font-size: 62.5%;
+  max-width: 320px;
+  margin: 0 auto;
+  background-color: black;
 }
 
 body {
@@ -19,4 +22,6 @@ body {
   margin: 0;
   background-color: white;
   height: 100%;
+  height: auto;
+  min-height: 100vh;
 }

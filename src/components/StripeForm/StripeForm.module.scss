@@ -1,0 +1,38 @@
+.form {
+  width: 25rem;
+  height: 20rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: relative;
+  padding: 1rem;
+}
+
+.button {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #fddb40;
+  border: solid 0.1rem black;
+  border-radius: 0.5rem;
+  transition: 0.4s;
+  font-size: 2rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #b4d024;
+  }
+}
+
+.closeForm {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border: solid 0.1rem black;
+  border-radius: 0.5rem;
+  transition: 0.4s;
+  font-size: 2rem;
+  cursor: pointer;
+  &:hover {
+    background-color: red;
+  }
+}

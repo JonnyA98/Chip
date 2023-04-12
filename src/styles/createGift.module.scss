@@ -19,6 +19,7 @@
   width: 100%;
   position: sticky;
   top: 0;
+  z-index: 100;
   background-color: white;
 }
 
@@ -330,6 +331,14 @@ input[type="file"]:hover ~ .ppbutton,
   justify-content: space-between;
 }
 
+.title {
+  width: 20rem;
+}
+.description {
+  height: 10rem;
+  width: 20rem;
+}
+
 .button {
   background-color: #fddb40;
   border: none;
@@ -349,6 +358,20 @@ input[type="file"]:hover ~ .ppbutton,
   padding: 0.5rem;
   border-radius: 1rem;
   margin: 2rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #b4d024;
+  }
+}
+
+.createbutton {
+  border: solid black 0.1rem;
+  background-color: white;
+  transition: 0.4s;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  margin: 2rem;
+  font-size: 3rem;
   cursor: pointer;
   &:hover {
     background-color: #b4d024;
@@ -447,8 +470,10 @@ input[type="file"]:hover ~ .ppbutton,
   margin-bottom: 1rem;
 }
 
-.dateInput {
-  width: 100%;
+.datewrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal {
@@ -494,6 +519,7 @@ input[type="file"]:hover ~ .ppbutton,
   text-decoration: none;
   text-align: center;
   width: 80%;
+  transition: 0.4s;
   &:hover {
     background-color: #fddb40;
   }
@@ -504,7 +530,9 @@ input[type="file"]:hover ~ .ppbutton,
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  height: auto;
 }
 
 @keyframes colorChange {

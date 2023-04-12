@@ -10,6 +10,7 @@
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 500;
 }
 
 .hero {
@@ -219,11 +220,15 @@ input[type="file"]:hover ~ .ppbutton,
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 10rem;
+  flex-direction: column;
   text-align: center;
   &__heading {
     width: 80%;
     margin-bottom: 2rem;
+  }
+
+  &__image {
+    margin-top: 10rem;
   }
 }
 
@@ -338,12 +343,25 @@ input[type="file"]:hover ~ .ppbutton,
 .footer {
   display: flex;
   justify-content: center;
-  margin-bottom: 4rem;
+  position: relative;
+  bottom: 2rem;
+}
+
+.footerwrapper {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: white;
+  transition: 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #b4d024;
+  }
 }
 
 .modalwrapper {
   height: 100%;
-  width: 100vw;
+  width: 320px;
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -406,15 +424,14 @@ input[type="file"]:hover ~ .ppbutton,
 
 .confettiContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 10rem;
+
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  max-width: 320px;
 }
 
 .confettibox {
@@ -442,4 +459,58 @@ input[type="file"]:hover ~ .ppbutton,
   border-radius: 3rem;
   margin-top: 20rem;
   border: black solid 0.2rem;
+}
+
+.chipmodal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  max-width: 320px;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 2rem;
+  padding: 1rem;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.successHeader {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background-color: #b4d024;
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
+.successlinkwrap {
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.successLink {
+  border: solid black 0.1rem;
+  padding: 0.5rem;
+  border-radius: 2rem;
+  margin: 1rem;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+  width: 80%;
+  transition: 0.4s;
+  &:hover {
+    background-color: #fddb40;
+  }
 }

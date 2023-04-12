@@ -55,7 +55,12 @@ const Home = () => {
       )}
       {displayWelcome && (
         <div className={styles.welcome}>
-          <Image src={intro} alt={logo} height={250}></Image>
+          <Image
+            className={styles.welcome__image}
+            src={intro}
+            alt={logo}
+            height={250}
+          ></Image>
         </div>
       )}
     </>
