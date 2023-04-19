@@ -19,7 +19,7 @@ import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import StripeForm from "../../components/StripeForm/StripeForm";
 import { Elements } from "@stripe/react-stripe-js";
-
+import Head from "next/head";
 const stripePromise = loadStripe(
   "pk_test_51MqMotD7x5DQT6pFSyJECz2KkzKc58OkyWUyDelnjAt6xYb5j2J1i54KoMnyIqWCiAUF2QFDaI1sKG8Ts6AVRQtW00C97JVYz4"
 );
@@ -189,6 +189,9 @@ const GiftDetails = () => {
 
   return (
     <>
+      <Head>
+        <title>Chip</title>
+      </Head>
       {!giftData || (!recipientName && isLoading && <h1>Loading...</h1>)}
       {giftData && recipientName && progress && !isLoading && (
         <div className={styles.container}>
@@ -266,7 +269,7 @@ const GiftDetails = () => {
       )}
       {giftCompleted && giftData && (
         <div className={styles.confettiContainer}>
-          <Confetti width={window.innerWidth} height={window.innerHeight} />
+          <Confetti width={320} height={window.innerHeight} />
           <div className={styles.confettibox}>
             <h1>You did it!</h1>
             <h2>You were part of something incredible!</h2>

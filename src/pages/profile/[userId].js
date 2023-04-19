@@ -11,6 +11,7 @@ import Friend from "../../components/Friend/Friend";
 import NonFriend from "../../components/NonFriend/NonFriend";
 import Pending from "../../components/Pending/Pending";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -139,6 +140,9 @@ const Profile = () => {
 
   return (
     <>
+      <Head>
+        <title>Chip</title>
+      </Head>
       {isLoading && <h1>Loading...</h1>}
       {!isLoading && !displayWelcome && (
         <div className={styles.container}>

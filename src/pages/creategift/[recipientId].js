@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import PulseLoader from "react-spinners/PulseLoader";
 import { loadStripe } from "@stripe/stripe-js";
 import StripeForm from "../../components/StripeForm/StripeForm";
-
+import Head from "next/head";
 import { Elements } from "@stripe/react-stripe-js";
 
 const stripePromise = loadStripe(
@@ -35,6 +35,8 @@ const createGift = () => {
   const [recommendations, setRecommendations] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showStripeForm, setShowStripeForm] = useState(false);
+  const [giftId, setGiftId] = useState(null);
+  const [message, setMessage] = useState("");
 
   const router = useRouter();
   const { recipientId } = router.query;
@@ -123,15 +125,19 @@ const createGift = () => {
   useEffect(() => {
     const postGift = async () => {
       try {
-        await axios.post(`http://localhost:3001/api/gifts/create`, {
-          title: title,
-          description: description,
-          sender_id: Number(userData.id),
-          recipient_id: Number(recipientId),
-          target_money: target,
-          money_left: target - you,
-          end_date: endDate,
-        });
+        const { data } = await axios.post(
+          `http://localhost:3001/api/gifts/create`,
+          {
+            title: title,
+            description: description,
+            sender_id: Number(userData.id),
+            recipient_id: Number(recipientId),
+            target_money: target,
+            money_left: target - you,
+            end_date: endDate,
+          }
+        );
+        setGiftId(data.gift_id);
       } catch (error) {
         console.log(error);
       }
@@ -167,8 +173,28 @@ const createGift = () => {
     setShowForm(true);
   };
 
+  const addComment = async () => {
+    try {
+      await axios.post(`http://localhost:3001/api/gifts/addcomment`, {
+        user_id: userData.id,
+        comment: message,
+        gift_id: giftId,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCommentHandler = () => {
+    e.preventDefault();
+    addComment();
+  };
+
   return (
     <>
+      <Head>
+        <title>Chip</title>
+      </Head>
       {isLoading && (
         <PulseLoader className={styles.colorchangingloader} size={15} />
       )}
@@ -178,6 +204,18 @@ const createGift = () => {
             <h2 className={styles.successHeader}>Payment accepted! ✅</h2>
             <h1 className={styles.successHeader}>Gift Created Successfully!</h1>
             <p>Thank you for starting something special!</p>
+            <form onSubmit={addCommentHandler}>
+              <label htmlFor="comment">
+                Leave a personal message for that special someone
+              </label>
+              <input
+                name="comment"
+                onChange={(e) => setMessage(e.target.value)}
+                type="text"
+                placeholder="Enter your message here"
+              />
+              <button>Add comment</button>
+            </form>
             <Link
               className={styles.successlinkwrap}
               href={`/profile/${userData.id}`}

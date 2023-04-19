@@ -6,7 +6,7 @@ import logo from "../../public/Logo/Logo.svg";
 import save from "../../public/icons/save.svg";
 import backarrow from "../../public/icons/backarrow.svg";
 import axios from "axios";
-
+import Head from "next/head";
 import Image from "next/image";
 
 const editProfile = () => {
@@ -138,6 +138,9 @@ const editProfile = () => {
 
   return (
     <>
+      <Head>
+        <title>Chip</title>
+      </Head>
       {isLoading && <h1>loading!!!!!</h1>}
       {!isLoading && (
         <div className={styles.container}>
