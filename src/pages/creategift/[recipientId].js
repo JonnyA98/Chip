@@ -16,9 +16,6 @@ const stripePromise = loadStripe(
   "pk_test_51MqMotD7x5DQT6pFSyJECz2KkzKc58OkyWUyDelnjAt6xYb5j2J1i54KoMnyIqWCiAUF2QFDaI1sKG8Ts6AVRQtW00C97JVYz4"
 );
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
 const createGift = () => {
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +34,7 @@ const createGift = () => {
   const [showStripeForm, setShowStripeForm] = useState(false);
   const [giftId, setGiftId] = useState(null);
   const [message, setMessage] = useState("");
+  const [toggleLink, setToggleLink] = useState(false);
 
   const router = useRouter();
   const { recipientId } = router.query;
@@ -185,9 +183,10 @@ const createGift = () => {
     }
   };
 
-  const addCommentHandler = () => {
+  const addCommentHandler = (e) => {
     e.preventDefault();
     addComment();
+    setToggleLink(true);
   };
 
   return (
@@ -204,7 +203,7 @@ const createGift = () => {
             <h2 className={styles.successHeader}>Payment accepted! ✅</h2>
             <h1 className={styles.successHeader}>Gift Created Successfully!</h1>
             <p>Thank you for starting something special!</p>
-            <form onSubmit={addCommentHandler}>
+            <form className={styles.giftMain} onSubmit={addCommentHandler}>
               <label htmlFor="comment">
                 Leave a personal message for that special someone
               </label>
@@ -214,13 +213,21 @@ const createGift = () => {
                 type="text"
                 placeholder="Enter your message here"
               />
-              <button>Add comment</button>
+              <button className={styles.successLink}>Add comment</button>
             </form>
             <Link
-              className={styles.successlinkwrap}
+              className={
+                !toggleLink
+                  ? styles.successlinkwrapdisabled
+                  : styles.successlinkwrap
+              }
               href={`/profile/${userData.id}`}
             >
-              <p className={styles.successLink}>
+              <p
+                className={
+                  !toggleLink ? styles.successLinkdisabled : styles.successLink
+                }
+              >
                 Go back home to start another gift or Chip!
               </p>
             </Link>

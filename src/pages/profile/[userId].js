@@ -44,6 +44,15 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    const getUserGifts = async () => {
+      try {
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }, [userData]);
+
+  useEffect(() => {
     const getUserFriends = async () => {
       try {
         const { data } = await axios.get(

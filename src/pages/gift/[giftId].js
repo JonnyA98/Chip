@@ -44,6 +44,8 @@ const GiftDetails = () => {
   const [progress, setProgress] = useState(null);
   const [percentage, setPercentage] = useState(null);
   const [showStripeForm, setShowStripeForm] = useState(false);
+  const [message, setMessage] = useState("");
+  const [toggleLink, setToggleLink] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -187,6 +189,24 @@ const GiftDetails = () => {
     }
   }, [chipDone]);
 
+  const addComment = async () => {
+    try {
+      await axios.post(`http://localhost:3001/api/gifts/addcomment`, {
+        user_id: userData.id,
+        comment: message,
+        gift_id: giftData.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCommentHandler = (e) => {
+    e.preventDefault();
+    addComment();
+    setToggleLink(true);
+  };
+
   return (
     <>
       <Head>
@@ -256,11 +276,32 @@ const GiftDetails = () => {
             <h2 className={styles.successHeader}>Payment accepted! ✅</h2>
 
             <p>Thank you for joining in!</p>
+
+            <form className={styles.giftMain} onSubmit={addCommentHandler}>
+              <label htmlFor="comment">
+                Leave a personal message for that special someone
+              </label>
+              <input
+                name="comment"
+                onChange={(e) => setMessage(e.target.value)}
+                type="text"
+                placeholder="Enter your message here"
+              />
+              <button className={styles.successLink}>Add comment</button>
+            </form>
             <Link
-              className={styles.successlinkwrap}
+              className={
+                !toggleLink
+                  ? styles.successlinkwrapdisabled
+                  : styles.successlinkwrap
+              }
               href={`/profile/${userData.id}`}
             >
-              <p className={styles.successLink}>
+              <p
+                className={
+                  !toggleLink ? styles.successLinkdisabled : styles.successLink
+                }
+              >
                 Go back home to start another gift or Chip!
               </p>
             </Link>
