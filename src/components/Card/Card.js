@@ -36,7 +36,7 @@ const Card = ({ userData, userGift }) => {
       <ul className={styles.inside}>
         {comments &&
           comments.map((comment, i) => (
-            <li key={i}>
+            <li className={styles.comment} key={i}>
               <p>{comment.comment}</p>
               <h3>{comment.user_name}</h3>
             </li>
