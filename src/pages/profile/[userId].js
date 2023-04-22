@@ -10,6 +10,7 @@ import Link from "next/link";
 import Friend from "../../components/Friend/Friend";
 import NonFriend from "../../components/NonFriend/NonFriend";
 import Pending from "../../components/Pending/Pending";
+import Card from "../../components/Card/Card";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
@@ -24,6 +25,8 @@ const Profile = () => {
   const [displayWelcome, setDisplayWelcome] = useState(true);
   const [addModal, setAddModal] = useState(false);
   const [acceptedModal, setAcceptedModal] = useState(false);
+  const [userGift, setUserGift] = useState(null);
+  const [card, setCard] = useState(false);
 
   const [welcomeText, setWelcomeText] = useState("Welcome");
 
@@ -46,11 +49,29 @@ const Profile = () => {
   useEffect(() => {
     const getUserGifts = async () => {
       try {
+        const { data } = await axios.post(
+          `http://localhost:3001/api/gifts/reciever/${userData.id}`,
+          {
+            userId: userData.id,
+          }
+        );
+        setUserGift(data[0]);
       } catch (error) {
         console.log(error);
       }
     };
+    if (userData) {
+      getUserGifts();
+    }
   }, [userData]);
+
+  useEffect(() => {
+    if (userGift) {
+      if (userGift.money_left <= 0) {
+        setCard(true);
+      }
+    }
+  }, [userGift]);
 
   useEffect(() => {
     const getUserFriends = async () => {
@@ -263,6 +284,11 @@ const Profile = () => {
           <article className={styles.modal}>
             <h1>Friend Added</h1>
           </article>
+        </div>
+      )}
+      {card && (
+        <div className={styles.cardWrapper}>
+          <Card userData={userData} userGift={userGift} />
         </div>
       )}
     </>

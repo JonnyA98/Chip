@@ -100,13 +100,6 @@ const GiftDetails = () => {
 
   useEffect(() => {
     if (giftData && users) {
-      if (giftData.money_left <= 0) {
-        setTimeout(() => {
-          setChipDone(false);
-          setGiftCompleted(true);
-        }, 500);
-      }
-
       const recipient = users.find((user) => user.id === giftData.recipient_id);
       setRecipientName(recipient.name);
       setPercentage(
@@ -205,6 +198,12 @@ const GiftDetails = () => {
     e.preventDefault();
     addComment();
     setToggleLink(true);
+    if (giftData.money_left <= 0) {
+      setTimeout(() => {
+        setChipDone(false);
+        setGiftCompleted(true);
+      }, 500);
+    }
   };
 
   return (
